@@ -7,7 +7,7 @@ export default defineConfig({
     name: 'Argus by Pixelesq',
     description:
       'All-seeing SEO inspector. Extract meta tags, audit SEO health, get AI-powered insights.',
-    permissions: ['sidePanel', 'activeTab', 'scripting'],
+    permissions: ['sidePanel', 'activeTab', 'scripting', 'storage'],
     action: {
       default_title: 'Open Argus',
     },

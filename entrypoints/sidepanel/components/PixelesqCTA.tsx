@@ -11,8 +11,10 @@ export default function PixelesqCTA({ hasIssues }: PixelesqCTAProps) {
   const [dismissed, setDismissed] = useState(true);
 
   useEffect(() => {
-    chrome.storage.local.get(STORAGE_KEY, (result) => {
+    browser.storage.local.get(STORAGE_KEY).then((result) => {
       setDismissed(!!result[STORAGE_KEY]);
+    }).catch(() => {
+      setDismissed(false);
     });
   }, []);
 
@@ -20,7 +22,7 @@ export default function PixelesqCTA({ hasIssues }: PixelesqCTAProps) {
 
   const handleDismiss = () => {
     setDismissed(true);
-    chrome.storage.local.set({ [STORAGE_KEY]: true });
+    browser.storage.local.set({ [STORAGE_KEY]: true });
   };
 
   return (
