@@ -10,6 +10,7 @@ import {
   ChevronDown,
   Clipboard,
   Table,
+  Check,
 } from 'lucide-react';
 import CopyButton from '../components/CopyButton';
 import SocialPreview from '../components/SocialPreview';
@@ -46,19 +47,39 @@ function LengthBadge({
 function FieldRow({
   label,
   value,
+  copyValue,
   children,
 }: {
   label: string;
   value?: string;
+  copyValue?: string;
   children?: React.ReactNode;
 }) {
+  const [copied, setCopied] = useState(false);
   const displayValue = value ?? '';
+  const textToCopy = copyValue ?? displayValue;
+
+  const handleClick = async () => {
+    if (!textToCopy) return;
+    try {
+      await navigator.clipboard.writeText(textToCopy);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      // silent fail
+    }
+  };
+
   return (
     <div className="group flex items-start gap-2 py-1">
       <span className="w-24 shrink-0 text-xs font-medium text-slate-500">
         {label}
       </span>
-      <div className="min-w-0 flex-1">
+      <div
+        className={`min-w-0 flex-1 ${textToCopy ? 'cursor-pointer rounded-sm transition-colors hover:bg-slate-800/60' : ''}`}
+        onClick={handleClick}
+        title={textToCopy ? 'Click to copy' : undefined}
+      >
         {children || (
           <span
             className={`break-all text-xs ${displayValue ? 'text-slate-200' : 'text-slate-600 italic'}`}
@@ -67,12 +88,18 @@ function FieldRow({
           </span>
         )}
       </div>
-      {displayValue && (
-        <CopyButton
-          value={displayValue}
-          className="shrink-0 opacity-0 group-hover:opacity-100"
-        />
-      )}
+      {textToCopy ? (
+        copied ? (
+          <span className="shrink-0 p-1">
+            <Check size={12} className="text-green-400" />
+          </span>
+        ) : (
+          <CopyButton
+            value={textToCopy}
+            className="shrink-0 opacity-0 group-hover:opacity-100"
+          />
+        )
+      ) : null}
     </div>
   );
 }
@@ -201,7 +228,7 @@ export default function ExtractTab({ data }: ExtractTabProps) {
         icon={<FileText size={14} />}
         defaultOpen={true}
       >
-        <FieldRow label="Title">
+        <FieldRow label="Title" copyValue={data.meta.title}>
           <span className="break-all text-xs text-slate-200">
             {data.meta.title || (
               <span className="italic text-slate-600">Not set</span>
@@ -209,7 +236,7 @@ export default function ExtractTab({ data }: ExtractTabProps) {
           </span>
           <LengthBadge length={data.meta.titleLength} min={30} max={60} />
         </FieldRow>
-        <FieldRow label="Description">
+        <FieldRow label="Description" copyValue={data.meta.description}>
           <span className="break-all text-xs text-slate-200">
             {data.meta.description || (
               <span className="italic text-slate-600">Not set</span>
