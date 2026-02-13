@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="128" y2="128" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#818cf8"/>
+    </linearGradient>
+    <linearGradient id="eye" x1="32" y1="44" x2="96" y2="84" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#e0e7ff"/>
+      <stop offset="100%" stop-color="#c7d2fe"/>
+    </linearGradient>
+  </defs>
+  <!-- Rounded square background -->
+  <rect width="128" height="128" rx="28" fill="url(#bg)"/>
+  <!-- Eye shape (almond) -->
+  <path d="M20 64 C20 64, 44 36, 64 36 C84 36, 108 64, 108 64 C108 64, 84 92, 64 92 C44 92, 20 64, 20 64Z" fill="url(#eye)" opacity="0.95"/>
+  <!-- Iris -->
+  <circle cx="64" cy="64" r="18" fill="#4338ca"/>
+  <!-- Pupil -->
+  <circle cx="64" cy="64" r="9" fill="#1e1b4b"/>
+  <!-- Light reflection -->
+  <circle cx="58" cy="58" r="4" fill="white" opacity="0.8"/>
+  <circle cx="70" cy="62" r="2" fill="white" opacity="0.5"/>
+</svg>
