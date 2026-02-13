@@ -7,11 +7,20 @@ import {
   Code2,
   RefreshCw,
   Loader2,
+  Download,
 } from 'lucide-react';
 import CopyButton from '../components/CopyButton';
 import GeminiStatus from '../components/GeminiStatus';
-import type { PageExtraction, GeminiAvailability, AiInsight } from '@/lib/types';
-import { checkGeminiAvailability, createSession, promptGemini } from '@/lib/ai/gemini';
+import type {
+  PageExtraction,
+  GeminiAvailability,
+  AiInsight,
+} from '@/lib/types';
+import {
+  checkGeminiAvailability,
+  createSession,
+  promptGemini,
+} from '@/lib/ai/gemini';
 import { SYSTEM_PROMPTS, buildPageContext } from '@/lib/ai/prompts';
 
 interface InsightsTabProps {
@@ -144,7 +153,11 @@ function StaticInsights({ data }: { data: PageExtraction }) {
 export default function InsightsTab({ data }: InsightsTabProps) {
   const [geminiStatus, setGeminiStatus] =
     useState<GeminiAvailability>('unavailable');
+  const [downloadProgress, setDownloadProgress] = useState<
+    number | undefined
+  >();
   const [insights, setInsights] = useState<Record<string, AiInsight>>({});
+  const [triggeringDownload, setTriggeringDownload] = useState(false);
 
   const pageContext = buildPageContext({
     title: data.meta.title,
@@ -160,19 +173,31 @@ export default function InsightsTab({ data }: InsightsTabProps) {
   }, []);
 
   const runInsight = useCallback(
-    async (key: string, title: string, systemPrompt: string, userPrompt: string) => {
+    async (
+      key: string,
+      title: string,
+      systemPrompt: string,
+      userPrompt: string,
+    ) => {
       setInsights((prev) => ({
         ...prev,
         [key]: { type: 'analysis', title, content: '', loading: true },
       }));
 
       try {
-        const session = await createSession(systemPrompt);
+        const session = await createSession(systemPrompt, (progress) => {
+          setDownloadProgress(progress);
+        });
         const result = await promptGemini(session, userPrompt);
         session.destroy();
         setInsights((prev) => ({
           ...prev,
-          [key]: { type: 'analysis', title, content: result, loading: false },
+          [key]: {
+            type: 'analysis',
+            title,
+            content: result,
+            loading: false,
+          },
         }));
       } catch (err) {
         setInsights((prev) => ({
@@ -214,48 +239,69 @@ export default function InsightsTab({ data }: InsightsTabProps) {
     );
   }, [geminiStatus, pageContext, runInsight]);
 
+  // Trigger model download -- calling createSession when downloadable will start the download
+  const handleTriggerDownload = async () => {
+    setTriggeringDownload(true);
+    setGeminiStatus('downloading');
+    try {
+      const session = await createSession(
+        'You are a helpful assistant.',
+        (progress) => {
+          setDownloadProgress(progress);
+        },
+      );
+      session.destroy();
+      setGeminiStatus('available');
+    } catch (err) {
+      console.error('Failed to download model:', err);
+      setGeminiStatus('downloadable');
+    } finally {
+      setTriggeringDownload(false);
+    }
+  };
+
+  const isAiReady = geminiStatus === 'available';
+
   return (
     <div className="pb-4">
       {/* Gemini Status */}
       <div className="flex items-center justify-between border-b border-slate-800 px-4 py-2.5">
-        <GeminiStatus status={geminiStatus} />
+        <GeminiStatus
+          status={geminiStatus}
+          downloadProgress={downloadProgress}
+        />
         <Sparkles size={14} className="text-indigo-400" />
       </div>
 
-      {geminiStatus !== 'available' ? (
+      {/* Unavailable -- show setup instructions */}
+      {geminiStatus === 'unavailable' && (
         <div className="px-4 py-4">
           <div className="mb-4 rounded-lg border border-slate-700 bg-slate-800/50 p-4">
             <p className="mb-3 text-sm font-semibold text-slate-200">
-              {geminiStatus === 'downloading'
-                ? 'Gemini Nano model is downloading...'
-                : 'AI Insights require Chrome\'s built-in Gemini Nano model'}
+              AI Insights require Chrome's built-in Gemini Nano model
             </p>
-            {geminiStatus === 'downloading' ? (
-              <div className="flex flex-col gap-1.5 text-xs text-slate-400">
-                <p>
-                  The model is currently being downloaded (~2.4 GB). This may take a few minutes.
-                </p>
-                <p>
-                  Once the download completes, reopen the Insights tab to use AI features.
-                </p>
-              </div>
-            ) : (
-              <div className="flex flex-col gap-1.5 text-xs text-slate-400">
-                <p>To enable:</p>
-                <p>1. Update to Chrome 137 or later</p>
-                <p>
-                  2. Go to{' '}
-                  <code className="rounded bg-slate-700 px-1 text-indigo-400">
-                    chrome://flags/#prompt-api-for-gemini-nano
-                  </code>
-                </p>
-                <p>3. Set to "Enabled"</p>
-                <p>4. Restart Chrome</p>
-                <p className="mt-2 text-slate-500">
-                  The model will download automatically (~2.4 GB).
-                </p>
-              </div>
-            )}
+            <div className="flex flex-col gap-1.5 text-xs text-slate-400">
+              <p>To enable:</p>
+              <p>1. Update to Chrome 138 or later</p>
+              <p>
+                2. Go to{' '}
+                <code className="rounded bg-slate-700 px-1 text-indigo-400">
+                  chrome://flags/#prompt-api-for-gemini-nano
+                </code>
+              </p>
+              <p>3. Set to "Enabled"</p>
+              <p>
+                4. Go to{' '}
+                <code className="rounded bg-slate-700 px-1 text-indigo-400">
+                  chrome://flags/#optimization-guide-on-device-model
+                </code>
+              </p>
+              <p>5. Set to "Enabled BypassPerfRequirement"</p>
+              <p>6. Restart Chrome</p>
+              <p className="mt-2 text-slate-500">
+                The model will download automatically (~2.4 GB) when first used.
+              </p>
+            </div>
           </div>
 
           <p className="mb-3 text-[10px] font-medium uppercase tracking-wide text-slate-500">
@@ -263,7 +309,71 @@ export default function InsightsTab({ data }: InsightsTabProps) {
           </p>
           <StaticInsights data={data} />
         </div>
-      ) : (
+      )}
+
+      {/* Downloadable -- show download trigger button */}
+      {geminiStatus === 'downloadable' && (
+        <div className="px-4 py-4">
+          <div className="mb-4 rounded-lg border border-indigo-400/20 bg-indigo-400/5 p-4">
+            <p className="mb-2 text-sm font-semibold text-slate-200">
+              Gemini Nano is available on your device
+            </p>
+            <p className="mb-3 text-xs text-slate-400">
+              The AI model needs to be downloaded once (~2.4 GB). After that, all
+              analysis runs locally on your device — no data leaves your browser.
+            </p>
+            <button
+              onClick={handleTriggerDownload}
+              disabled={triggeringDownload}
+              className="inline-flex items-center gap-1.5 rounded-md bg-indigo-500 px-3 py-2 text-xs font-medium text-white transition-colors hover:bg-indigo-600 disabled:opacity-50"
+            >
+              <Download size={14} />
+              Download & Activate AI
+            </button>
+          </div>
+
+          <p className="mb-3 text-[10px] font-medium uppercase tracking-wide text-slate-500">
+            Static Analysis
+          </p>
+          <StaticInsights data={data} />
+        </div>
+      )}
+
+      {/* Downloading -- show progress */}
+      {geminiStatus === 'downloading' && (
+        <div className="px-4 py-4">
+          <div className="mb-4 rounded-lg border border-amber-400/20 bg-amber-400/5 p-4">
+            <p className="mb-2 text-sm font-semibold text-slate-200">
+              Downloading Gemini Nano model...
+            </p>
+            {downloadProgress !== undefined && (
+              <div className="mb-2">
+                <div className="h-2 overflow-hidden rounded-full bg-slate-700">
+                  <div
+                    className="h-full rounded-full bg-amber-400 transition-all duration-300"
+                    style={{ width: `${Math.round(downloadProgress * 100)}%` }}
+                  />
+                </div>
+                <p className="mt-1 text-right text-[10px] text-slate-500">
+                  {Math.round(downloadProgress * 100)}%
+                </p>
+              </div>
+            )}
+            <p className="text-xs text-slate-400">
+              This is a one-time download. AI features will activate
+              automatically when complete.
+            </p>
+          </div>
+
+          <p className="mb-3 text-[10px] font-medium uppercase tracking-wide text-slate-500">
+            Static Analysis
+          </p>
+          <StaticInsights data={data} />
+        </div>
+      )}
+
+      {/* Available -- show AI features */}
+      {isAiReady && (
         <div className="px-4 py-3">
           {/* Auto-run insights */}
           <p className="mb-2 text-[10px] font-medium uppercase tracking-wide text-slate-500">
