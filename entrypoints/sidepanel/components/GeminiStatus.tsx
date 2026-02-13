@@ -2,18 +2,30 @@ import type { GeminiAvailability } from '@/lib/types';
 
 interface GeminiStatusProps {
   status: GeminiAvailability;
+  downloadProgress?: number;
 }
 
-export default function GeminiStatus({ status }: GeminiStatusProps) {
+export default function GeminiStatus({
+  status,
+  downloadProgress,
+}: GeminiStatusProps) {
   const config = {
     available: {
       dot: 'bg-green-400',
       text: 'AI Ready',
       textColor: 'text-green-400',
     },
+    downloadable: {
+      dot: 'bg-blue-400',
+      text: 'AI available (model not downloaded)',
+      textColor: 'text-blue-400',
+    },
     downloading: {
       dot: 'bg-amber-400 animate-pulse',
-      text: 'Model downloading...',
+      text:
+        downloadProgress !== undefined
+          ? `Downloading model... ${Math.round(downloadProgress * 100)}%`
+          : 'Downloading model...',
       textColor: 'text-amber-400',
     },
     unavailable: {

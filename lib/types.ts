@@ -162,4 +162,4 @@ export interface AiInsight {
   error?: string;
 }
 
-export type GeminiAvailability = 'available' | 'downloading' | 'unavailable';
+export type GeminiAvailability = 'available' | 'downloadable' | 'downloading' | 'unavailable';
