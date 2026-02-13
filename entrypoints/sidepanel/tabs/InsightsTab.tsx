@@ -222,27 +222,40 @@ export default function InsightsTab({ data }: InsightsTabProps) {
         <Sparkles size={14} className="text-indigo-400" />
       </div>
 
-      {geminiStatus === 'unavailable' ? (
+      {geminiStatus !== 'available' ? (
         <div className="px-4 py-4">
           <div className="mb-4 rounded-lg border border-slate-700 bg-slate-800/50 p-4">
             <p className="mb-3 text-sm font-semibold text-slate-200">
-              AI Insights require Chrome's built-in Gemini Nano model
+              {geminiStatus === 'downloading'
+                ? 'Gemini Nano model is downloading...'
+                : 'AI Insights require Chrome\'s built-in Gemini Nano model'}
             </p>
-            <div className="flex flex-col gap-1.5 text-xs text-slate-400">
-              <p>To enable:</p>
-              <p>1. Update to Chrome 137 or later</p>
-              <p>
-                2. Go to{' '}
-                <code className="rounded bg-slate-700 px-1 text-indigo-400">
-                  chrome://flags/#prompt-api-for-gemini-nano
-                </code>
-              </p>
-              <p>3. Set to "Enabled"</p>
-              <p>4. Restart Chrome</p>
-              <p className="mt-2 text-slate-500">
-                The model will download automatically (~2.4 GB).
-              </p>
-            </div>
+            {geminiStatus === 'downloading' ? (
+              <div className="flex flex-col gap-1.5 text-xs text-slate-400">
+                <p>
+                  The model is currently being downloaded (~2.4 GB). This may take a few minutes.
+                </p>
+                <p>
+                  Once the download completes, reopen the Insights tab to use AI features.
+                </p>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-1.5 text-xs text-slate-400">
+                <p>To enable:</p>
+                <p>1. Update to Chrome 137 or later</p>
+                <p>
+                  2. Go to{' '}
+                  <code className="rounded bg-slate-700 px-1 text-indigo-400">
+                    chrome://flags/#prompt-api-for-gemini-nano
+                  </code>
+                </p>
+                <p>3. Set to "Enabled"</p>
+                <p>4. Restart Chrome</p>
+                <p className="mt-2 text-slate-500">
+                  The model will download automatically (~2.4 GB).
+                </p>
+              </div>
+            )}
           </div>
 
           <p className="mb-3 text-[10px] font-medium uppercase tracking-wide text-slate-500">
