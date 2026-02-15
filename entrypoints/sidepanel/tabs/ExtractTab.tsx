@@ -11,6 +11,7 @@ import {
   Clipboard,
   Table,
   Check,
+  Globe,
 } from 'lucide-react';
 import CopyButton from '../components/CopyButton';
 import SocialPreview from '../components/SocialPreview';
@@ -189,6 +190,7 @@ function formatAsTable(data: PageExtraction): string {
 export default function ExtractTab({ data }: ExtractTabProps) {
   const [showAllLinks, setShowAllLinks] = useState(false);
   const [showAllImages, setShowAllImages] = useState(false);
+  const [copiedButton, setCopiedButton] = useState<string | null>(null);
 
   const internalLinks = data.links.filter((l) => !l.isExternal);
   const externalLinks = data.links.filter((l) => l.isExternal);
@@ -203,22 +205,42 @@ export default function ExtractTab({ data }: ExtractTabProps) {
       {/* Copy actions */}
       <div className="flex gap-2 border-b border-slate-800 px-4 py-2">
         <button
-          onClick={() =>
-            navigator.clipboard.writeText(JSON.stringify(data, null, 2))
-          }
+          onClick={async () => {
+            try {
+              await navigator.clipboard.writeText(JSON.stringify(data, null, 2));
+              setCopiedButton('json');
+              setTimeout(() => setCopiedButton(null), 1500);
+            } catch {
+              // silent fail
+            }
+          }}
           className="flex items-center gap-1.5 rounded-md bg-slate-800 px-2.5 py-1.5 text-[11px] font-medium text-slate-300 transition-colors hover:bg-slate-700"
         >
-          <Clipboard size={12} />
-          Copy as JSON
+          {copiedButton === 'json' ? (
+            <Check size={12} className="text-green-400" />
+          ) : (
+            <Clipboard size={12} />
+          )}
+          {copiedButton === 'json' ? 'Copied!' : 'Copy as JSON'}
         </button>
         <button
-          onClick={() =>
-            navigator.clipboard.writeText(formatAsTable(data))
-          }
+          onClick={async () => {
+            try {
+              await navigator.clipboard.writeText(formatAsTable(data));
+              setCopiedButton('table');
+              setTimeout(() => setCopiedButton(null), 1500);
+            } catch {
+              // silent fail
+            }
+          }}
           className="flex items-center gap-1.5 rounded-md bg-slate-800 px-2.5 py-1.5 text-[11px] font-medium text-slate-300 transition-colors hover:bg-slate-700"
         >
-          <Table size={12} />
-          Copy as Table
+          {copiedButton === 'table' ? (
+            <Check size={12} className="text-green-400" />
+          ) : (
+            <Table size={12} />
+          )}
+          {copiedButton === 'table' ? 'Copied!' : 'Copy as Table'}
         </button>
       </div>
 
@@ -456,27 +478,39 @@ export default function ExtractTab({ data }: ExtractTabProps) {
               {showAllImages ? 'Hide all' : 'View all'}
             </button>
             {showAllImages && (
-              <div className="mt-2 flex max-h-60 flex-col gap-1.5 overflow-y-auto">
+              <div className="mt-2 flex max-h-80 flex-col gap-1.5 overflow-y-auto">
                 {data.images.map((img, i) => (
                   <div
                     key={i}
-                    className="rounded border border-slate-700 p-2 text-xs"
+                    className="overflow-hidden rounded border border-slate-700"
                   >
-                    <p className="truncate text-slate-300" title={img.src}>
-                      {img.src}
-                    </p>
-                    <p className="mt-0.5 text-slate-500">
-                      Alt:{' '}
-                      {img.alt || (
-                        <span className="text-red-400">Missing</span>
-                      )}
-                    </p>
-                    <p className="text-slate-500">
-                      {img.displayWidth}x{img.displayHeight}px
-                      {img.hasLazyLoading && (
-                        <span className="ml-1 text-green-400">lazy</span>
-                      )}
-                    </p>
+                    <div className="flex h-16 items-center justify-center overflow-hidden bg-slate-700">
+                      <img
+                        src={img.src}
+                        alt={img.alt || ''}
+                        className="h-full w-full object-cover"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).style.display = 'none';
+                        }}
+                      />
+                    </div>
+                    <div className="p-2 text-xs">
+                      <p className="truncate text-slate-300" title={img.src}>
+                        {img.src}
+                      </p>
+                      <p className="mt-0.5 text-slate-500">
+                        Alt:{' '}
+                        {img.alt || (
+                          <span className="text-red-400">Missing</span>
+                        )}
+                      </p>
+                      <p className="text-slate-500">
+                        {img.displayWidth}x{img.displayHeight}px
+                        {img.hasLazyLoading && (
+                          <span className="ml-1 text-green-400">lazy</span>
+                        )}
+                      </p>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -484,6 +518,50 @@ export default function ExtractTab({ data }: ExtractTabProps) {
           </>
         )}
       </Section>
+
+      {/* Response Headers */}
+      {data.responseHeaders && Object.keys(data.responseHeaders).length > 0 && (
+        <Section
+          title="Response Headers"
+          icon={<Globe size={14} />}
+          count={Object.keys(data.responseHeaders).length}
+        >
+          {[
+            'x-robots-tag',
+            'cache-control',
+            'content-type',
+            'strict-transport-security',
+            'x-frame-options',
+            'x-content-type-options',
+            'content-security-policy',
+            'server',
+          ].map((header) => {
+            const value = data.responseHeaders?.[header];
+            if (!value) return null;
+            return (
+              <FieldRow key={header} label={header} value={value} />
+            );
+          })}
+          {/* Show any remaining headers not in the priority list */}
+          {Object.entries(data.responseHeaders)
+            .filter(
+              ([key]) =>
+                ![
+                  'x-robots-tag',
+                  'cache-control',
+                  'content-type',
+                  'strict-transport-security',
+                  'x-frame-options',
+                  'x-content-type-options',
+                  'content-security-policy',
+                  'server',
+                ].includes(key),
+            )
+            .map(([key, value]) => (
+              <FieldRow key={key} label={key} value={value} />
+            ))}
+        </Section>
+      )}
     </div>
   );
 }
