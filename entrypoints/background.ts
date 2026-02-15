@@ -5,7 +5,7 @@ export default defineBackground(() => {
   // Listen for messages from side panel
   browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     if (message.type === 'FETCH_HEADERS') {
-      fetch(message.url, { method: 'HEAD', mode: 'no-cors' })
+      fetch(message.url, { method: 'HEAD' })
         .then((response) => {
           const headers: Record<string, string> = {};
           response.headers.forEach((value, key) => {

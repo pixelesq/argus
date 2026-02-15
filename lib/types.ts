@@ -99,6 +99,7 @@ export interface PageExtraction {
   wordCount: number;
   url: string;
   timestamp: string;
+  responseHeaders?: Record<string, string>;
 }
 
 // ===== AUDIT TYPES =====

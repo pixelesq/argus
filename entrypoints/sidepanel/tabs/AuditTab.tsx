@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { Search } from 'lucide-react';
 import ScoreGauge from '../components/ScoreGauge';
 import AuditItem from '../components/AuditItem';
 import PixelesqCTA from '../components/PixelesqCTA';
@@ -34,14 +36,45 @@ const SEVERITY_ORDER: Record<Severity, number> = {
   pass: 3,
 };
 
+const SEVERITY_COLORS: Record<Severity, { active: string; text: string }> = {
+  critical: { active: 'bg-red-400/20 text-red-400 border-red-400/30', text: 'text-red-400' },
+  warning: { active: 'bg-amber-400/20 text-amber-400 border-amber-400/30', text: 'text-amber-400' },
+  info: { active: 'bg-blue-400/20 text-blue-400 border-blue-400/30', text: 'text-blue-400' },
+  pass: { active: 'bg-green-400/20 text-green-400 border-green-400/30', text: 'text-green-400' },
+};
+
 export default function AuditTab({ report }: AuditTabProps) {
+  const [severityFilter, setSeverityFilter] = useState<Set<Severity>>(
+    new Set(['critical', 'warning', 'info', 'pass']),
+  );
+  const [searchQuery, setSearchQuery] = useState('');
+
   const hasIssues = report.results.some(
     (r) => r.severity === 'critical' || r.severity === 'warning',
   );
 
-  // Group by category
+  // Count by severity
+  const severityCounts: Record<Severity, number> = { critical: 0, warning: 0, info: 0, pass: 0 };
+  for (const r of report.results) {
+    severityCounts[r.severity]++;
+  }
+
+  // Filter results
+  const query = searchQuery.toLowerCase();
+  const filteredResults = report.results.filter(
+    (r) =>
+      severityFilter.has(r.severity) &&
+      (!query ||
+        r.ruleName.toLowerCase().includes(query) ||
+        r.message.toLowerCase().includes(query)),
+  );
+
+  const isFiltered =
+    severityFilter.size < 4 || searchQuery.length > 0;
+
+  // Group filtered results by category
   const grouped: Record<string, typeof report.results> = {};
-  for (const result of report.results) {
+  for (const result of filteredResults) {
     if (!grouped[result.category]) {
       grouped[result.category] = [];
     }
@@ -54,6 +87,19 @@ export default function AuditTab({ report }: AuditTabProps) {
       (a, b) => SEVERITY_ORDER[a.severity] - SEVERITY_ORDER[b.severity],
     );
   }
+
+  const toggleSeverity = (severity: Severity) => {
+    setSeverityFilter((prev) => {
+      const next = new Set(prev);
+      if (next.has(severity)) {
+        // Don't allow deselecting all
+        if (next.size > 1) next.delete(severity);
+      } else {
+        next.add(severity);
+      }
+      return next;
+    });
+  };
 
   return (
     <div className="pb-4">
@@ -98,6 +144,51 @@ export default function AuditTab({ report }: AuditTabProps) {
         </div>
       </div>
 
+      {/* Severity filter + search */}
+      <div className="border-b border-slate-800 px-4 py-3">
+        <div className="mb-2 flex flex-wrap gap-1.5">
+          {(['critical', 'warning', 'info', 'pass'] as const).map(
+            (severity) => {
+              const isActive = severityFilter.has(severity);
+              return (
+                <button
+                  key={severity}
+                  onClick={() => toggleSeverity(severity)}
+                  className={`rounded-md border px-2 py-1 text-[11px] font-medium capitalize transition-colors ${
+                    isActive
+                      ? SEVERITY_COLORS[severity].active
+                      : 'border-slate-700 bg-slate-800 text-slate-500'
+                  }`}
+                >
+                  {severity}
+                  <span className="ml-1 opacity-70">
+                    {severityCounts[severity]}
+                  </span>
+                </button>
+              );
+            },
+          )}
+        </div>
+        <div className="relative">
+          <Search
+            size={12}
+            className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500"
+          />
+          <input
+            type="text"
+            placeholder="Search rules..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full rounded-md bg-slate-800 py-1.5 pl-7 pr-2.5 text-xs text-slate-200 placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
+          />
+        </div>
+        {isFiltered && (
+          <p className="mt-1.5 text-[10px] text-slate-500">
+            Showing {filteredResults.length} of {report.results.length} checks
+          </p>
+        )}
+      </div>
+
       {/* Results grouped by category */}
       <div className="px-3 py-3">
         {(Object.keys(CATEGORY_LABELS) as AuditCategory[]).map((category) => {
@@ -117,6 +208,11 @@ export default function AuditTab({ report }: AuditTabProps) {
             </div>
           );
         })}
+        {filteredResults.length === 0 && (
+          <p className="py-4 text-center text-xs text-slate-500">
+            No results match your filters.
+          </p>
+        )}
       </div>
 
       <PixelesqCTA hasIssues={hasIssues} />

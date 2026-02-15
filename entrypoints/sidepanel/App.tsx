@@ -4,13 +4,14 @@ import TabBar, { type TabId } from './components/TabBar';
 import ExtractTab from './tabs/ExtractTab';
 import AuditTab from './tabs/AuditTab';
 import InsightsTab from './tabs/InsightsTab';
-import type { PageExtraction, AuditReport } from '@/lib/types';
+import type { PageExtraction, AuditReport, WebVitals } from '@/lib/types';
 import { runAudit } from '@/lib/auditors/engine';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<TabId>('extract');
   const [pageData, setPageData] = useState<PageExtraction | null>(null);
   const [auditReport, setAuditReport] = useState<AuditReport | null>(null);
+  const [webVitals, setWebVitals] = useState<WebVitals | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -44,10 +45,35 @@ export default function App() {
 
       // Try to inject and extract
       try {
-        const data = await browser.tabs.sendMessage(tab.id, {
+        const data = (await browser.tabs.sendMessage(tab.id, {
           type: 'EXTRACT_PAGE_DATA',
-        });
-        setPageData(data as PageExtraction);
+        })) as PageExtraction;
+
+        // Fetch response headers via background script
+        try {
+          const result = await browser.runtime.sendMessage({
+            type: 'FETCH_HEADERS',
+            url: tab.url,
+          });
+          if (result?.headers) {
+            data.responseHeaders = result.headers;
+          }
+        } catch {
+          // Headers are optional — CORS or network failures are fine
+        }
+
+        setPageData(data);
+
+        // Fetch web vitals (needs small delay for PerformanceObservers to buffer)
+        try {
+          await new Promise((r) => setTimeout(r, 200));
+          const vitals = await browser.tabs.sendMessage(tab.id, {
+            type: 'GET_WEB_VITALS',
+          });
+          setWebVitals(vitals as WebVitals);
+        } catch {
+          // Vitals are optional
+        }
       } catch {
         setError(
           'Could not connect to page. Try refreshing the page and reopening Argus.',
@@ -94,9 +120,9 @@ export default function App() {
   // Run audit when switching to audit tab
   useEffect(() => {
     if (activeTab === 'audit' && pageData) {
-      setAuditReport(runAudit(pageData));
+      setAuditReport(runAudit(pageData, webVitals ?? undefined));
     }
-  }, [activeTab, pageData]);
+  }, [activeTab, pageData, webVitals]);
 
   const truncatedUrl = pageData?.url
     ? pageData.url.length > 50

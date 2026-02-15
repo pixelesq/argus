@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import {
   Sparkles,
   FileText,
@@ -159,14 +159,18 @@ export default function InsightsTab({ data }: InsightsTabProps) {
   const [insights, setInsights] = useState<Record<string, AiInsight>>({});
   const [triggeringDownload, setTriggeringDownload] = useState(false);
 
-  const pageContext = buildPageContext({
-    title: data.meta.title,
-    description: data.meta.description,
-    url: data.url,
-    wordCount: data.wordCount,
-    headings: data.headings.map((h) => `${h.tag}: ${h.text}`),
-    schemaTypes: data.jsonLd.map((j) => j.type).filter(Boolean),
-  });
+  const pageContext = useMemo(
+    () =>
+      buildPageContext({
+        title: data.meta.title,
+        description: data.meta.description,
+        url: data.url,
+        wordCount: data.wordCount,
+        headings: data.headings.map((h) => `${h.tag}: ${h.text}`),
+        schemaTypes: data.jsonLd.map((j) => j.type).filter(Boolean),
+      }),
+    [data.meta.title, data.meta.description, data.url, data.wordCount, data.headings, data.jsonLd],
+  );
 
   useEffect(() => {
     checkGeminiAvailability().then(setGeminiStatus);

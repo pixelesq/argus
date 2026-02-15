@@ -151,4 +151,41 @@ export const technicalRules: AuditRule[] = [
       };
     },
   },
+  {
+    id: 'x-robots-noindex',
+    category: 'technical',
+    name: 'X-Robots-Tag Header',
+    description: 'X-Robots-Tag HTTP header should not contain noindex.',
+    check: (data) => {
+      const xRobots = data.responseHeaders?.['x-robots-tag'] ?? '';
+      if (xRobots.toLowerCase().includes('noindex')) {
+        return {
+          ruleId: 'x-robots-noindex',
+          ruleName: 'X-Robots-Tag Header',
+          category: 'technical',
+          severity: 'critical',
+          message:
+            'X-Robots-Tag contains noindex — page is blocked from indexing via HTTP header.',
+          details: `X-Robots-Tag: ${xRobots}\nThis header overrides meta robots. If intentional, ignore this warning.`,
+        };
+      }
+      if (xRobots) {
+        return {
+          ruleId: 'x-robots-noindex',
+          ruleName: 'X-Robots-Tag Header',
+          category: 'technical',
+          severity: 'pass',
+          message: `X-Robots-Tag: ${xRobots}`,
+        };
+      }
+      return {
+        ruleId: 'x-robots-noindex',
+        ruleName: 'X-Robots-Tag Header',
+        category: 'technical',
+        severity: 'pass',
+        message:
+          'No X-Robots-Tag header detected (normal for most sites).',
+      };
+    },
+  },
 ];
