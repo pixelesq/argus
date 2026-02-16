@@ -48,10 +48,10 @@ export default function AuditItem({ result }: { result: AuditResult }) {
           {config.icon}
         </span>
         <div className="min-w-0 flex-1">
-          <p className="text-xs font-semibold text-slate-200">
+          <p className="text-[13px] font-semibold text-slate-200">
             {result.ruleName}
           </p>
-          <p className="mt-0.5 text-xs text-slate-400">{result.message}</p>
+          <p className="mt-0.5 text-[13px] text-slate-400">{result.message}</p>
         </div>
         {result.details && (
           <ChevronDown
@@ -62,7 +62,7 @@ export default function AuditItem({ result }: { result: AuditResult }) {
       </button>
       {expanded && result.details && (
         <div className="border-t border-slate-700 px-3 py-2">
-          <p className="whitespace-pre-wrap text-xs text-slate-400">
+          <p className="whitespace-pre-wrap text-[13px] text-slate-400">
             {result.details}
           </p>
         </div>

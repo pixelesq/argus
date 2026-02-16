@@ -1,11 +1,17 @@
 import { useState, useEffect, useCallback } from 'react';
-import { RefreshCw, Eye } from 'lucide-react';
+import { RefreshCw, Eye, Plus, Minus } from 'lucide-react';
 import TabBar, { type TabId } from './components/TabBar';
 import ExtractTab from './tabs/ExtractTab';
 import AuditTab from './tabs/AuditTab';
 import InsightsTab from './tabs/InsightsTab';
 import type { PageExtraction, AuditReport, WebVitals } from '@/lib/types';
 import { runAudit } from '@/lib/auditors/engine';
+
+const ZOOM_KEY = 'argus_zoom_level';
+const ZOOM_MIN = 80;
+const ZOOM_MAX = 140;
+const ZOOM_STEP = 10;
+const ZOOM_DEFAULT = 100;
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<TabId>('extract');
@@ -14,6 +20,23 @@ export default function App() {
   const [webVitals, setWebVitals] = useState<WebVitals | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [zoom, setZoom] = useState(ZOOM_DEFAULT);
+
+  // Load saved zoom level
+  useEffect(() => {
+    chrome.storage.local.get(ZOOM_KEY).then((result) => {
+      if (result[ZOOM_KEY]) setZoom(result[ZOOM_KEY]);
+    }).catch(() => {});
+  }, []);
+
+  // Apply zoom to document root
+  useEffect(() => {
+    document.documentElement.style.fontSize = `${(zoom / 100) * 13}px`;
+    chrome.storage.local.set({ [ZOOM_KEY]: zoom }).catch(() => {});
+  }, [zoom]);
+
+  const zoomIn = () => setZoom((z) => Math.min(z + ZOOM_STEP, ZOOM_MAX));
+  const zoomOut = () => setZoom((z) => Math.max(z - ZOOM_STEP, ZOOM_MIN));
 
   const extractData = useCallback(async () => {
     setLoading(true);
@@ -137,16 +160,43 @@ export default function App() {
         <div className="flex items-center gap-2">
           <Eye size={18} className="text-indigo-400" />
           <span className="text-sm font-bold text-slate-50">Argus</span>
+          <a
+            href="https://pixelesq.com?utm_source=argus&utm_medium=extension&utm_campaign=header"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[10px] text-slate-500 transition-colors hover:text-indigo-400"
+          >
+            by Pixelesq
+          </a>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5">
           {truncatedUrl && (
             <span
-              className="max-w-[180px] truncate text-[10px] text-slate-500"
+              className="max-w-[140px] truncate text-[10px] text-slate-500"
               title={pageData?.url}
             >
               {truncatedUrl}
             </span>
           )}
+          <div className="flex items-center rounded-md border border-slate-700 bg-slate-800">
+            <button
+              onClick={zoomOut}
+              disabled={zoom <= ZOOM_MIN}
+              className="px-1 py-0.5 text-slate-400 transition-colors hover:text-slate-200 disabled:opacity-30"
+              title="Zoom out"
+            >
+              <Minus size={12} />
+            </button>
+            <span className="min-w-[32px] text-center text-[10px] text-slate-400">{zoom}%</span>
+            <button
+              onClick={zoomIn}
+              disabled={zoom >= ZOOM_MAX}
+              className="px-1 py-0.5 text-slate-400 transition-colors hover:text-slate-200 disabled:opacity-30"
+              title="Zoom in"
+            >
+              <Plus size={12} />
+            </button>
+          </div>
           <button
             onClick={extractData}
             disabled={loading}
@@ -156,18 +206,6 @@ export default function App() {
             <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
           </button>
         </div>
-      </div>
-
-      {/* Pixelesq branding */}
-      <div className="flex h-6 shrink-0 items-center justify-center border-b border-slate-800 bg-slate-900/50">
-        <a
-          href="https://pixelesq.com?utm_source=argus&utm_medium=extension&utm_campaign=header"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-[10px] text-slate-600 transition-colors hover:text-indigo-400"
-        >
-          Powered by Pixelesq
-        </a>
       </div>
 
       {/* Tab bar */}
