@@ -157,8 +157,8 @@ export default function App() {
     <div className="flex h-screen flex-col bg-slate-900">
       {/* Header */}
       <div className="flex h-12 shrink-0 items-center justify-between border-b border-slate-700 px-3">
-        <div className="flex items-center gap-2">
-          <Eye size={18} className="text-indigo-400" />
+        <div className="flex items-center gap-1.5">
+          {/* <Eye size={18} className="text-indigo-400" /> */}
           <span className="text-sm font-bold text-slate-50">Argus</span>
           <a
             href="https://pixelesq.com?utm_source=argus&utm_medium=extension&utm_campaign=header"
@@ -170,14 +170,14 @@ export default function App() {
           </a>
         </div>
         <div className="flex items-center gap-1.5">
-          {truncatedUrl && (
+          {/* {truncatedUrl && (
             <span
               className="max-w-[140px] truncate text-[10px] text-slate-500"
               title={pageData?.url}
             >
               {truncatedUrl}
             </span>
-          )}
+          )} */}
           <div className="flex items-center rounded-md border border-slate-700 bg-slate-800">
             <button
               onClick={zoomOut}
