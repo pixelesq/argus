@@ -1,14 +1,37 @@
 {
   "name": "@pixelesq/argus-mcp",
   "version": "1.0.0",
-  "description": "MCP server for SEO auditing — use with Claude Code to audit any webpage's SEO from your terminal.",
+  "description": "MCP server for SEO auditing — use with Claude Code, Cursor, or any MCP client to audit any webpage's SEO from your terminal.",
   "type": "module",
+  "license": "MIT",
   "bin": {
     "argus-mcp": "./build/index.js"
   },
+  "files": [
+    "build",
+    "README.md"
+  ],
+  "keywords": [
+    "mcp",
+    "seo",
+    "audit",
+    "meta-tags",
+    "structured-data",
+    "open-graph",
+    "claude",
+    "ai",
+    "model-context-protocol"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ArslanYM/argus",
+    "directory": "mcp-server"
+  },
+  "homepage": "https://github.com/ArslanYM/argus/tree/main/mcp-server",
   "scripts": {
     "build": "tsup src/index.ts --format esm --out-dir build --clean",
-    "dev": "tsup src/index.ts --format esm --out-dir build --watch"
+    "dev": "tsup src/index.ts --format esm --out-dir build --watch",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.1",
