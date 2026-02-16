@@ -1,7 +1,7 @@
 {
   "name": "argus",
-  "description": "All-seeing SEO inspector. Extract meta tags, audit SEO health, get AI-powered insights.",
-  "private": true,
+  "description": "The all-seeing, AI-powered SEO inspector. Chrome extension + MCP server powered by Claude Opus 4.6.",
+  "license": "MIT",
   "version": "1.0.0",
   "type": "module",
   "scripts": {

@@ -2,178 +2,256 @@
   <img src="public/icon/icon.svg" width="80" height="80" alt="Argus logo" />
 </p>
 
-<h1 align="center">Argus by Pixelesq</h1>
+<h1 align="center">Argus</h1>
 
 <p align="center">
-  <strong>The all-seeing SEO inspector for Chrome.</strong><br/>
-  Extract meta tags. Audit SEO health. Get AI-powered insights. All in one click.
+  <strong>The all-seeing, AI-powered SEO inspector.</strong><br/>
+  A free Chrome extension + MCP server that brings enterprise-level SEO auditing to everyone — powered by Claude Opus 4.6.
 </p>
 
 <p align="center">
-  <a href="https://pixelesq.com?utm_source=github&utm_medium=readme&utm_campaign=argus">Website</a> &middot;
-  <a href="#install">Install</a> &middot;
   <a href="#features">Features</a> &middot;
-  <a href="#ai-insights">AI Insights</a>
+  <a href="#install">Install</a> &middot;
+  <a href="#opus-46-integration">Opus 4.6 Integration</a> &middot;
+  <a href="#mcp-server">MCP Server</a> &middot;
+  <a href="#architecture">Architecture</a>
 </p>
 
 ---
 
-## Why Argus?
+## The Problem
 
-Named after **Argus Panoptes** — the hundred-eyed giant of Greek mythology who sees everything — Argus gives you instant, complete visibility into any webpage's SEO setup.
+Enterprise SEO tools cost $100-300/month. SEO expertise is locked behind years of specialist knowledge. Most free tools only scratch the surface.
 
-No more juggling browser dev tools, bookmarklets, and third-party crawlers. Open the side panel, and everything is right there.
-
-**Built for SEO professionals, marketers, developers, and content teams** who need to quickly inspect and validate on-page SEO without leaving the browser.
+**Argus breaks these barriers.** It's a completely free, open-source Chrome extension that gives you instant, deep SEO analysis on any webpage — powered by Claude Opus 4.6 for AI insights that rival expensive platforms.
 
 ---
 
 ## Features
 
-### Extract — Every tag, one click
+### Three-Tab Architecture
 
-Open the **Extract** tab and instantly see everything search engines see:
+**Extract** — Every SEO tag at a glance
+- Title, meta description, canonical, robots (with character count badges)
+- Open Graph & Twitter Card tags with **live social preview cards**
+- JSON-LD structured data with syntax highlighting and validation
+- Heading hierarchy as a visual tree
+- Link analysis (internal/external/nofollow counts)
+- Image audit (missing alt text, dimensions, lazy loading, modern formats)
+- One-click copy and full JSON/text export
 
-- **Title & meta description** with character count indicators (green = optimal, amber = needs attention)
-- **Open Graph tags** with a live social preview card showing how your page looks when shared on Facebook/LinkedIn
-- **Twitter Card tags** with a live Twitter preview card
-- **JSON-LD structured data** with syntax-highlighted pretty print, schema type badges, and validation status
-- **Heading hierarchy** visualized as a tree — spot skipped levels at a glance
-- **Link summary** — internal, external, and nofollow counts with full expandable list
-- **Image audit** — total count, missing alt text, missing dimensions, lazy loading status
+**Audit** — 40+ rule-based SEO checks
+- Weighted scoring (0-100) across 10 categories
+- Categories: title, description, headings, images, links, technical, structured data, social, content, performance
+- Color-coded severity (critical/warning/info/pass) with fix guidance
+- Real Web Vitals: LCP, INP, CLS, TTFB via PerformanceObserver API
 
-**One-click copy** — click any field value to copy it. Export the entire page as **JSON** or a formatted **text table** for reports and docs.
+**Insights** — AI-powered deep analysis
+- Three-tier AI provider system with automatic fallback
+- Automatic page classification, content quality, and SEO strategy analysis
+- On-demand: rewrite meta descriptions, improve titles, suggest FAQ schema, generate schema markup
+- Opus 4.6 exclusive: SEO strategy brief, technical fixes, content gap analysis, competitor insights
 
-### Audit — Know your score in seconds
+---
 
-The **Audit** tab runs **40+ SEO checks** across 10 categories and gives you a weighted score from 0 to 100:
+<h2 id="opus-46-integration">Opus 4.6 Integration</h2>
 
-| Category | What's checked |
-|---|---|
-| **Title** | Existence, length (30-60 chars), OG title consistency |
-| **Description** | Existence, length (70-160 chars), OG description consistency |
-| **Headings** | H1 presence, single H1, hierarchy integrity, empty headings |
-| **Images** | Alt text coverage, explicit dimensions (CLS prevention), lazy loading, modern formats |
-| **Links** | Descriptive anchor text, empty hrefs, internal link density |
-| **Technical** | Canonical URL, robots/noindex detection, HTTPS, viewport, lang attribute, hreflang |
-| **Structured Data** | JSON-LD presence, validity, schema types, breadcrumb markup |
-| **Social** | OG tags, OG image + dimensions, Twitter card, Twitter image |
-| **Content** | Word count (thin content detection), reading time estimate |
-| **Performance** | LCP, INP, CLS, TTFB (via Web Vitals when available) |
+Argus uses Claude Opus 4.6 as its primary AI engine via a **BYOK (Bring Your Own Key)** architecture:
 
-Every issue is categorized as **critical**, **warning**, or **info** with a clear explanation and fix guidance. Category scores are weighted to reflect real-world SEO impact.
+### Three-Tier AI Provider System
 
-### AI Insights — On-device, private, instant
+| Tier | Provider | How It Works |
+|------|----------|-------------|
+| **1 (Primary)** | Claude Opus 4.6 | User provides their API key (stored locally, never synced). Direct `fetch()` from the side panel to `api.anthropic.com` with streaming SSE. |
+| **2 (Fallback)** | Gemini Nano | Chrome's on-device AI model. No API key, no network — runs locally. |
+| **3 (Always Available)** | Static Analysis | Rule-based analysis — works offline with zero dependencies. |
 
-The **Insights** tab uses **Chrome's built-in Gemini Nano** — a large language model that runs entirely on your device. No data leaves your browser. No API keys. No usage limits.
+### Opus 4.6 Exclusive Features
 
-**Automatic analysis** when you open the tab:
-- **Page Classification** — what the page is about, who it targets, and what the search intent is
-- **Meta Description Assessment** — quality evaluation of your current meta description
-- **Content Quality Analysis** — thin content signals, keyword usage, actionable improvements
+When Claude is configured, Argus unlocks advanced analysis that smaller models can't handle:
 
-**On-demand AI actions:**
-- **Rewrite Meta Description** — generates an optimized 140-155 character meta description
-- **Improve Title** — suggests a better, keyword-front-loaded title tag
-- **Suggest FAQ Schema** — generates 3-5 FAQ questions and answers ready for FAQ schema markup
-- **Recommend Schema Types** — suggests which Schema.org types to add based on your page content
+- **SEO Strategy Brief** — Comprehensive prioritized action plan analyzing ALL extracted data (meta, headings, links, images, schema, technical signals) plus audit results
+- **Schema Markup Generator** — Generates complete, valid JSON-LD ready to paste into your page
+- **Technical Fix Generator** — Produces exact HTML code fixes for every audit issue
+- **Content Gap Analysis** — Identifies missing sections based on page type and heading structure
+- **Competitor Insights** — E-E-A-T signals, featured snippet optimization, and advanced tactics
 
-> **No Gemini Nano?** No problem. The tab gracefully falls back to a **static analysis** with content assessment, missing meta tag checklist, and rule-based schema recommendations.
+### Why BYOK?
+
+- **Privacy** — Your API key never leaves your browser (stored in `chrome.storage.local`)
+- **No backend** — Direct browser-to-API calls, no proxy server
+- **No cost to us** — Users control their own usage
+- **Graceful degradation** — Works perfectly without any API key (Gemini Nano or static analysis)
+
+### API Architecture
+
+```
+Side Panel (React)
+    │
+    ├─ Has Claude key? → fetch('https://api.anthropic.com/v1/messages')
+    │                     with streaming SSE, max_tokens: 2048
+    │
+    ├─ Gemini Nano available? → Chrome Built-in AI Prompt API (on-device)
+    │
+    └─ Neither? → Static rule-based analysis (always works)
+```
+
+---
+
+<h2 id="mcp-server">MCP Server — SEO Auditing in Your Terminal</h2>
+
+Argus includes a **Model Context Protocol (MCP) server** that brings SEO auditing directly into Claude Code. Developers can audit any webpage's SEO without leaving their terminal.
+
+### Tools
+
+| Tool | Description |
+|------|-------------|
+| `seo_audit` | Full 40+ rule audit with weighted scoring |
+| `extract_meta` | Extract all meta tags, OG, Twitter, JSON-LD, headings, links, images |
+| `compare_seo` | Side-by-side comparison of 2-5 URLs |
+| `extract_json` | Raw extraction + audit data as JSON for programmatic use |
+
+### Setup
+
+```bash
+# Build the MCP server
+cd mcp-server && npm install && npm run build
+
+# Add to Claude Code
+claude mcp add argus-seo -- node mcp-server/build/index.js
+```
+
+Or drop a `.mcp.json` in any project:
+```json
+{
+  "mcpServers": {
+    "argus-seo": {
+      "command": "node",
+      "args": ["path/to/argus/mcp-server/build/index.js"]
+    }
+  }
+}
+```
+
+### Shared Audit Engine
+
+The MCP server shares the same audit engine as the Chrome extension. The audit rules are pure functions that take a `PageExtraction` data structure — they work identically in both browser and Node.js runtimes.
+
+```
+Chrome Extension                    MCP Server
+─────────────                       ──────────
+content.ts (DOM APIs)               fetch() + cheerio (HTML parsing)
+        ↓                                   ↓
+   PageExtraction ◄───── SAME TYPE ─────► PageExtraction
+        ↓                                   ↓
+   auditors/engine.ts  ◄── SHARED CODE ──► auditors/engine.ts
+        ↓                                   ↓
+   AuditReport                          AuditReport (returned via MCP)
+```
 
 ---
 
 <h2 id="install">Install</h2>
 
-### From Chrome Web Store
+### Chrome Extension
 
-*(Coming soon)*
-
-### Manual Install (Developer Mode)
-
-1. Download or clone this repository
-2. Install dependencies and build:
+1. Clone and build:
    ```bash
+   git clone https://github.com/ArslanYM/argus.git
+   cd argus
    npm install
    npm run build
    ```
-3. Open **chrome://extensions/** in Chrome
-4. Enable **Developer mode** (toggle in the top right)
-5. Click **Load unpacked**
-6. Select the `.output/chrome-mv3` folder (press **Cmd+Shift+.** on Mac to reveal hidden folders)
-7. Click the **Argus** icon in your toolbar — the side panel opens
-8. Navigate to any webpage and start inspecting
+2. Open `chrome://extensions/`, enable **Developer mode**
+3. Click **Load unpacked**, select `.output/chrome-mv3`
+4. Click the Argus icon — the side panel opens
 
-### Enable AI Insights (optional)
+### Configure AI (Optional)
 
-Gemini Nano requires Chrome 137+ and a one-time setup:
+**Claude Opus 4.6:** Click the gear icon in the Insights tab → enter your API key from [console.anthropic.com](https://console.anthropic.com/settings/keys)
 
-1. Go to `chrome://flags/#prompt-api-for-gemini-nano`
-2. Set to **Enabled**
-3. Restart Chrome
-4. The model downloads automatically (~2.4 GB, one-time)
+**Gemini Nano:** Requires Chrome 138+. Enable `chrome://flags/#prompt-api-for-gemini-nano`, restart Chrome.
 
 ---
 
-## How It Works
+<h2 id="architecture">Architecture</h2>
 
-Argus runs **entirely client-side** — no network calls, no analytics, no data collection.
-
-- A **content script** is injected into each page to extract DOM data (meta tags, headings, links, images, JSON-LD, Web Vitals)
-- The **side panel UI** communicates with the content script via Chrome's message passing API
-- The **audit engine** runs 40+ rule-based checks with weighted scoring
-- **AI insights** use Chrome's built-in Gemini Nano model — everything stays on your device
-
-### Privacy
-
-Argus does not:
-- Send any data to external servers
-- Include analytics or tracking
-- Collect or store browsing history
-- Make any network requests (except the optional HTTP HEAD for response headers)
-
-Your page data never leaves your browser.
-
----
-
-## Tech Stack
+### Tech Stack
 
 | Layer | Technology |
 |---|---|
-| Framework | [WXT](https://wxt.dev) (Vite-based extension framework) |
-| UI | React 18 + TailwindCSS |
-| Language | TypeScript |
+| Extension Framework | [WXT](https://wxt.dev) (Vite-based) |
+| UI | React 19 + TailwindCSS 4 |
+| Language | TypeScript (strict) |
 | Manifest | Chrome Extension Manifest V3 |
-| AI | Chrome Built-in AI Prompt API (Gemini Nano) |
-| Icons | [Lucide](https://lucide.dev) |
+| AI (Cloud) | Claude Opus 4.6 via Messages API |
+| AI (On-Device) | Chrome Built-in AI (Gemini Nano) |
+| MCP Server | @modelcontextprotocol/sdk + cheerio |
+| Icons | [Lucide React](https://lucide.dev) |
+
+### Project Structure
+
+```
+argus/
+├── entrypoints/              # Chrome extension entry points
+│   ├── background.ts         # Service worker (side panel + headers)
+│   ├── content.ts            # Content script (DOM extraction)
+│   └── sidepanel/            # React side panel UI
+│       ├── App.tsx
+│       ├── tabs/             # Extract, Audit, Insights
+│       └── components/       # UI components
+├── lib/                      # Core business logic
+│   ├── ai/                   # AI provider system
+│   │   ├── claude.ts         # Claude Opus 4.6 API client
+│   │   ├── gemini.ts         # Gemini Nano client
+│   │   ├── provider.ts       # Unified provider with fallback
+│   │   ├── prompts.ts        # System prompts (standard + Opus-enhanced)
+│   │   └── settings.ts       # API key management
+│   ├── auditors/             # Audit engine (shared with MCP)
+│   │   ├── engine.ts         # Orchestration
+│   │   ├── scoring.ts        # Weighted scoring algorithm
+│   │   └── rules/            # 40+ audit rules across 10 categories
+│   └── extractors/           # DOM-based data extraction
+├── mcp-server/               # MCP server for Claude Code
+│   ├── src/
+│   │   ├── index.ts          # Server + tools
+│   │   └── extractor.ts      # cheerio-based HTML extraction
+│   └── package.json
+└── .mcp.json                 # MCP config for Claude Code
+```
+
+### Privacy
+
+- **No analytics, no tracking, no data collection**
+- The extension makes zero network requests except:
+  1. (Optional) HEAD request for HTTP response headers
+  2. (Optional) Claude API calls — only when user provides their own key, direct to Anthropic
+- Gemini Nano runs entirely on-device
+- API keys stored in `chrome.storage.local` (device-local, never synced)
 
 ---
 
 ## Development
 
 ```bash
-# Install dependencies
-npm install
-
-# Start dev server with hot reload
+# Extension dev server (hot reload)
 npm run dev
 
 # Production build
 npm run build
 
-# Create zip for Chrome Web Store
-npm run zip
+# MCP server
+cd mcp-server && npm install && npm run build
 ```
 
 ---
 
-## About Pixelesq
+## License
 
-Argus is built by **[Pixelesq](https://pixelesq.com)** — an AI-native platform that automates meta tags, structured data, and SEO optimization across all your pages.
-
-If Argus finds issues on your site, [Pixelesq can fix them automatically](https://pixelesq.com?utm_source=github&utm_medium=readme&utm_campaign=argus_about).
+MIT License — see [LICENSE](LICENSE) for details.
 
 ---
 
 <p align="center">
-  <sub>Built with care by <a href="https://pixelesq.com">Pixelesq</a></sub>
+  <sub>Built for the <strong>Built with Opus 4.6: a Claude Code Hackathon</strong></sub>
 </p>

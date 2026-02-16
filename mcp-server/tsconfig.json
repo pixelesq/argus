@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ES2022",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "outDir": "build",
+    "rootDir": ".",
+    "declaration": true,
+    "paths": {
+      "@/lib/*": ["../lib/*"]
+    }
+  },
+  "include": ["src/**/*", "../lib/types.ts", "../lib/auditors/**/*"]
+}
