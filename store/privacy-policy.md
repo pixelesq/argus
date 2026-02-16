@@ -64,7 +64,6 @@ Argus requests the following Chrome extension permissions:
 |---|---|
 | `sidePanel` | Display the extension UI in Chrome's side panel |
 | `activeTab` | Access the currently active tab to extract SEO data |
-| `scripting` | Inject the content script that reads page metadata |
 | `storage` | Store the CTA dismissal preference (one boolean value) |
 
 The extension runs a content script on all URLs (`<all_urls>`) to enable SEO extraction on any webpage. The content script only activates when the extension sends an extraction request — it does not run background processes or monitor browsing activity.

@@ -256,7 +256,7 @@ Whether you want to know how to check meta tags, understand how the SEO audit sc
       "name": "What permissions does Argus need and why?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Argus requests four Chrome permissions: 'sidePanel' to open the extension as a side panel alongside your page, 'activeTab' to read the content of the tab you're currently viewing (only when you click the Argus icon), 'scripting' to inject the content script that extracts meta tags and page data, and 'storage' to save your preferences locally. Argus does not request broad browsing history, bookmark, or download permissions."
+        "text": "Argus requests three Chrome permissions: 'sidePanel' to open the extension as a side panel alongside your page, 'activeTab' to read the content of the tab you're currently viewing (only when you click the Argus icon), and 'storage' to save your preferences locally. Argus does not request broad browsing history, bookmark, or download permissions."
       }
     },
     {
@@ -441,7 +441,7 @@ All AI processing in Argus happens on your device using Chrome's built-in Gemini
 
 ### What permissions does Argus need and why?
 
-Argus requests four Chrome permissions: **sidePanel** to open the extension as a side panel alongside your page, **activeTab** to read the content of the tab you're currently viewing (only when you click the Argus icon), **scripting** to inject the content script that extracts meta tags and page data, and **storage** to save your preferences locally. Argus does not request broad browsing history, bookmark, or download permissions.
+Argus requests three Chrome permissions: **sidePanel** to open the extension as a side panel alongside your page, **activeTab** to read the content of the tab you're currently viewing (only when you click the Argus icon), and **storage** to save your preferences locally. Argus does not request broad browsing history, bookmark, or download permissions.
 
 <!-- End Privacy & Security -->
 

@@ -102,7 +102,6 @@ When asked to justify each permission:
 |---|---|
 | `sidePanel` | Required to display the extension's primary UI in Chrome's side panel, where users view extracted SEO data, audit results, and AI insights. |
 | `activeTab` | Required to identify the currently active tab and send extraction requests to the content script running on that tab. |
-| `scripting` | Required to inject the content script that reads meta tags, headings, links, images, and structured data from the page DOM. |
 | `storage` | Used to store a single user preference (whether the promotional CTA banner has been dismissed). No personal data is stored. |
 | `<all_urls>` (host permission via content script) | The content script needs to run on all URLs so users can inspect SEO data on any webpage they visit. No data is collected or transmitted — extraction only occurs when the user has the side panel open. |
 
