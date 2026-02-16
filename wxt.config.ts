@@ -8,6 +8,7 @@ export default defineConfig({
     description:
       'All-seeing SEO inspector. Extract meta tags, audit SEO health, get AI-powered insights.',
     permissions: ['sidePanel', 'activeTab', 'storage'],
+    host_permissions: ['https://api.anthropic.com/*'],
     action: {
       default_title: 'Open Argus',
     },

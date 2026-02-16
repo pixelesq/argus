@@ -4,3 +4,5 @@ node_modules/
 dist/
 *.zip
 .DS_Store
+mcp-server/node_modules/
+mcp-server/build/

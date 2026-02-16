@@ -164,3 +164,5 @@ export interface AiInsight {
 }
 
 export type GeminiAvailability = 'available' | 'downloadable' | 'downloading' | 'unavailable';
+
+export type AiProvider = 'claude' | 'gemini' | 'static';

@@ -117,12 +117,12 @@ export default function App() {
     };
   }, [extractData]);
 
-  // Run audit when switching to audit tab
+  // Run audit when data is available (needed for both Audit and Insights tabs)
   useEffect(() => {
-    if (activeTab === 'audit' && pageData) {
+    if (pageData) {
       setAuditReport(runAudit(pageData, webVitals ?? undefined));
     }
-  }, [activeTab, pageData, webVitals]);
+  }, [pageData, webVitals]);
 
   const truncatedUrl = pageData?.url
     ? pageData.url.length > 50
@@ -202,7 +202,7 @@ export default function App() {
               <AuditTab report={auditReport} />
             )}
             {activeTab === 'insights' && pageData && (
-              <InsightsTab data={pageData} />
+              <InsightsTab data={pageData} auditReport={auditReport} />
             )}
           </>
         )}

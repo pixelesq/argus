@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "argus-seo": {
+      "command": "node",
+      "args": ["mcp-server/build/index.js"]
+    }
+  }
+}

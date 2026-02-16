@@ -1,0 +1,22 @@
+{
+  "name": "@pixelesq/argus-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for SEO auditing — use with Claude Code to audit any webpage's SEO from your terminal.",
+  "type": "module",
+  "bin": {
+    "argus-mcp": "./build/index.js"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --out-dir build --clean",
+    "dev": "tsup src/index.ts --format esm --out-dir build --watch"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "cheerio": "^1.0.0",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.3"
+  }
+}
