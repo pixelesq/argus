@@ -330,7 +330,7 @@ The static fallback ensures that the Insights tab always delivers value, regardl
 | **Auto-refresh** | Refreshes data on tab switch and page load |
 | **Network requests** | None (fully client-side) |
 | **Data collection** | None — no analytics, no tracking, no telemetry |
-| **Permissions** | `sidePanel`, `activeTab`, `scripting`, `storage` |
+| **Permissions** | `sidePanel`, `activeTab`, `storage` |
 | **Icon set** | Lucide (open-source) |
 | **Price** | Free — no premium tier, no usage limits |
 
@@ -351,7 +351,7 @@ Argus operates entirely within your browser:
 - No analytics or tracking scripts are included.
 - The optional AI features use Chrome's built-in Gemini Nano model, which runs on-device. Your page content is never sent to any API endpoint.
 
-The extension requests only the minimum permissions it needs: `sidePanel` to render the UI, `activeTab` and `scripting` to read page content from the active tab, and `storage` to persist settings.
+The extension requests only the minimum permissions it needs: `sidePanel` to render the UI, `activeTab` to read page content from the active tab, and `storage` to persist settings.
 
 ---
 
