@@ -17,6 +17,7 @@ import {
 import CopyButton from '../components/CopyButton';
 import AiStatus from '../components/AiStatus';
 import AiSettings from '../components/AiSettings';
+import { renderMarkdown } from '../components/Markdown';
 import type {
   PageExtraction,
   AuditReport,
@@ -50,7 +51,7 @@ function InsightCard({
   return (
     <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-3">
       <div className="mb-2 flex items-center justify-between">
-        <span className="text-xs font-semibold text-slate-200">
+        <span className="text-sm font-semibold text-slate-200">
           {insight.title}
         </span>
         <div className="flex items-center gap-1">
@@ -69,16 +70,17 @@ function InsightCard({
         </div>
       </div>
       {insight.loading ? (
-        <div className="flex items-center gap-2 py-2">
+        <div className="flex items-center gap-2 py-3">
           <Loader2 size={14} className="animate-spin text-indigo-400" />
-          <span className="text-xs text-slate-400">Analyzing with AI...</span>
+          <span className="text-sm text-slate-400">Analyzing with AI...</span>
         </div>
       ) : insight.error ? (
-        <p className="text-xs text-red-400">{insight.error}</p>
+        <p className="text-sm text-red-400">{insight.error}</p>
       ) : (
-        <p className="whitespace-pre-wrap text-xs leading-relaxed text-slate-300">
-          {insight.content}
-        </p>
+        <div
+          className="text-[13px] leading-relaxed text-slate-300"
+          dangerouslySetInnerHTML={{ __html: renderMarkdown(insight.content) }}
+        />
       )}
     </div>
   );
@@ -99,33 +101,33 @@ function StaticInsights({ data }: { data: PageExtraction }) {
   return (
     <div className="flex flex-col gap-3">
       <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-3">
-        <p className="mb-2 text-xs font-semibold text-slate-200">
+        <p className="mb-2 text-sm font-semibold text-slate-200">
           Content Assessment
         </p>
-        <p className="text-xs text-slate-300">
+        <p className="text-[13px] text-slate-300">
           {data.wordCount >= 300
             ? `This page has ${data.wordCount} words, which is sufficient for most content types.`
             : data.wordCount > 0
               ? `This page has only ${data.wordCount} words. Consider adding more substantive content for better search visibility.`
               : 'No text content detected on this page.'}
         </p>
-        <p className="mt-1 text-xs text-slate-400">
+        <p className="mt-1 text-[13px] text-slate-400">
           Estimated reading time: {Math.ceil(data.wordCount / 200)} min
         </p>
       </div>
 
       {missingMeta.length > 0 && (
         <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-3">
-          <p className="mb-2 text-xs font-semibold text-slate-200">
+          <p className="mb-2 text-sm font-semibold text-slate-200">
             Missing Meta Tags
           </p>
           <ul className="flex flex-col gap-1">
             {missingMeta.map((tag) => (
               <li
                 key={tag}
-                className="flex items-center gap-1.5 text-xs text-amber-400"
+                className="flex items-center gap-1.5 text-[13px] text-amber-400"
               >
-                <span className="h-1 w-1 rounded-full bg-amber-400" />
+                <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
                 {tag}
               </li>
             ))}
@@ -134,27 +136,27 @@ function StaticInsights({ data }: { data: PageExtraction }) {
       )}
 
       <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-3">
-        <p className="mb-2 text-xs font-semibold text-slate-200">
+        <p className="mb-2 text-sm font-semibold text-slate-200">
           Schema Recommendations
         </p>
-        <p className="text-xs text-slate-300">
+        <p className="text-[13px] text-slate-300">
           {data.jsonLd.length > 0
             ? `Current schema types: ${data.jsonLd.map((j) => j.type).filter(Boolean).join(', ') || 'Unknown'}`
             : 'No structured data found. Consider adding:'}
         </p>
         {data.jsonLd.length === 0 && (
           <ul className="mt-1 flex flex-col gap-0.5">
-            <li className="text-xs text-slate-400">
-              - Article / BlogPosting for blog content
+            <li className="text-[13px] text-slate-400">
+              Article / BlogPosting for blog content
             </li>
-            <li className="text-xs text-slate-400">
-              - Product for product pages
+            <li className="text-[13px] text-slate-400">
+              Product for product pages
             </li>
-            <li className="text-xs text-slate-400">
-              - Organization for homepages
+            <li className="text-[13px] text-slate-400">
+              Organization for homepages
             </li>
-            <li className="text-xs text-slate-400">
-              - BreadcrumbList for navigation
+            <li className="text-[13px] text-slate-400">
+              BreadcrumbList for navigation
             </li>
           </ul>
         )}
@@ -417,7 +419,7 @@ export default function InsightsTab({ data, auditReport }: InsightsTabProps) {
             </div>
           )}
 
-          <p className="mb-3 text-[10px] font-medium uppercase tracking-wide text-slate-500">
+          <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-500">
             Static Analysis
           </p>
           <StaticInsights data={data} />
@@ -428,7 +430,7 @@ export default function InsightsTab({ data, auditReport }: InsightsTabProps) {
       {isAiReady && (
         <div className="px-4 py-3">
           {/* Auto-run insights */}
-          <p className="mb-2 text-[10px] font-medium uppercase tracking-wide text-slate-500">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
             {isClaude ? 'Opus 4.6 Analysis' : 'AI Analysis'}
           </p>
           <div className="mb-4 flex flex-col gap-2">
@@ -488,7 +490,7 @@ export default function InsightsTab({ data, auditReport }: InsightsTabProps) {
           </div>
 
           {/* On-demand actions (shared) */}
-          <p className="mb-2 text-[10px] font-medium uppercase tracking-wide text-slate-500">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
             On-Demand Actions
           </p>
           <div className="mb-2 grid grid-cols-2 gap-2">
@@ -557,7 +559,7 @@ export default function InsightsTab({ data, auditReport }: InsightsTabProps) {
           {/* Claude-only: Advanced actions */}
           {isClaude && (
             <>
-              <p className="mb-2 mt-3 text-[10px] font-medium uppercase tracking-wide text-indigo-400/70">
+              <p className="mb-2 mt-3 text-xs font-semibold uppercase tracking-wide text-indigo-400/70">
                 Opus 4.6 Deep Analysis
               </p>
               <div className="mb-4 grid grid-cols-2 gap-2">
@@ -655,7 +657,7 @@ export default function InsightsTab({ data, auditReport }: InsightsTabProps) {
 
           {/* Static reference section */}
           <div className="mt-4">
-            <p className="mb-2 text-[10px] font-medium uppercase tracking-wide text-slate-500">
+            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
               Quick Reference
             </p>
             <StaticInsights data={data} />

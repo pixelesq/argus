@@ -34,7 +34,7 @@ function LengthBadge({
   const inRange = length >= min && length <= max;
   return (
     <span
-      className={`ml-1.5 rounded px-1.5 py-0.5 text-[10px] font-medium ${
+      className={`ml-1.5 rounded px-1.5 py-0.5 text-xs font-medium ${
         inRange
           ? 'bg-green-400/10 text-green-400'
           : 'bg-amber-400/10 text-amber-400'
@@ -73,7 +73,7 @@ function FieldRow({
 
   return (
     <div className="group flex items-start gap-2 py-1">
-      <span className="w-24 shrink-0 text-xs font-medium text-slate-500">
+      <span className="w-24 shrink-0 text-[13px] font-medium text-slate-500">
         {label}
       </span>
       <div
@@ -83,7 +83,7 @@ function FieldRow({
       >
         {children || (
           <span
-            className={`break-all text-xs ${displayValue ? 'text-slate-200' : 'text-slate-600 italic'}`}
+            className={`break-all text-[13px] ${displayValue ? 'text-slate-200' : 'text-slate-600 italic'}`}
           >
             {displayValue || 'Not set'}
           </span>
@@ -127,11 +127,11 @@ function Section({
         className="flex w-full items-center gap-2 px-4 py-2.5 text-left transition-colors hover:bg-slate-800/50"
       >
         <span className="text-slate-400">{icon}</span>
-        <span className="flex-1 text-xs font-semibold text-slate-200">
+        <span className="flex-1 text-sm font-semibold text-slate-200">
           {title}
         </span>
         {count !== undefined && (
-          <span className="rounded bg-slate-700 px-1.5 py-0.5 text-[10px] text-slate-400">
+          <span className="rounded bg-slate-700 px-1.5 py-0.5 text-xs text-slate-400">
             {count}
           </span>
         )}
@@ -214,7 +214,7 @@ export default function ExtractTab({ data }: ExtractTabProps) {
               // silent fail
             }
           }}
-          className="flex items-center gap-1.5 rounded-md bg-slate-800 px-2.5 py-1.5 text-[11px] font-medium text-slate-300 transition-colors hover:bg-slate-700"
+          className="flex items-center gap-1.5 rounded-md bg-slate-800 px-2.5 py-1.5 text-xs font-medium text-slate-300 transition-colors hover:bg-slate-700"
         >
           {copiedButton === 'json' ? (
             <Check size={12} className="text-green-400" />
@@ -233,7 +233,7 @@ export default function ExtractTab({ data }: ExtractTabProps) {
               // silent fail
             }
           }}
-          className="flex items-center gap-1.5 rounded-md bg-slate-800 px-2.5 py-1.5 text-[11px] font-medium text-slate-300 transition-colors hover:bg-slate-700"
+          className="flex items-center gap-1.5 rounded-md bg-slate-800 px-2.5 py-1.5 text-xs font-medium text-slate-300 transition-colors hover:bg-slate-700"
         >
           {copiedButton === 'table' ? (
             <Check size={12} className="text-green-400" />
@@ -251,7 +251,7 @@ export default function ExtractTab({ data }: ExtractTabProps) {
         defaultOpen={true}
       >
         <FieldRow label="Title" copyValue={data.meta.title}>
-          <span className="break-all text-xs text-slate-200">
+          <span className="break-all text-[13px] text-slate-200">
             {data.meta.title || (
               <span className="italic text-slate-600">Not set</span>
             )}
@@ -259,7 +259,7 @@ export default function ExtractTab({ data }: ExtractTabProps) {
           <LengthBadge length={data.meta.titleLength} min={30} max={60} />
         </FieldRow>
         <FieldRow label="Description" copyValue={data.meta.description}>
-          <span className="break-all text-xs text-slate-200">
+          <span className="break-all text-[13px] text-slate-200">
             {data.meta.description || (
               <span className="italic text-slate-600">Not set</span>
             )}
@@ -292,7 +292,7 @@ export default function ExtractTab({ data }: ExtractTabProps) {
         <FieldRow label="og:site_name" value={data.og.siteName} />
         <FieldRow label="og:locale" value={data.og.locale} />
         <div className="mt-3">
-          <p className="mb-2 text-[10px] font-medium uppercase tracking-wide text-slate-500">
+          <p className="mb-2 text-xs font-medium uppercase tracking-wide text-slate-500">
             Social Preview
           </p>
           <SocialPreview
@@ -318,7 +318,7 @@ export default function ExtractTab({ data }: ExtractTabProps) {
         <FieldRow label="twitter:site" value={data.twitter.site} />
         <FieldRow label="twitter:creator" value={data.twitter.creator} />
         <div className="mt-3">
-          <p className="mb-2 text-[10px] font-medium uppercase tracking-wide text-slate-500">
+          <p className="mb-2 text-xs font-medium uppercase tracking-wide text-slate-500">
             Twitter Preview
           </p>
           <SocialPreview
@@ -343,7 +343,7 @@ export default function ExtractTab({ data }: ExtractTabProps) {
         count={data.jsonLd.length}
       >
         {data.jsonLd.length === 0 ? (
-          <p className="text-xs italic text-slate-600">
+          <p className="text-[13px] italic text-slate-600">
             No JSON-LD structured data found.
           </p>
         ) : (
@@ -362,7 +362,7 @@ export default function ExtractTab({ data }: ExtractTabProps) {
         count={data.headings.length}
       >
         {data.headings.length === 0 ? (
-          <p className="text-xs italic text-slate-600">No headings found.</p>
+          <p className="text-[13px] italic text-slate-600">No headings found.</p>
         ) : (
           <>
             <div className="mb-2 flex flex-wrap gap-1.5">
@@ -374,7 +374,7 @@ export default function ExtractTab({ data }: ExtractTabProps) {
                 return (
                   <span
                     key={tag}
-                    className="rounded bg-slate-700 px-1.5 py-0.5 text-[10px] text-slate-300"
+                    className="rounded bg-slate-700 px-1.5 py-0.5 text-xs text-slate-300"
                   >
                     {tag.toUpperCase()}: {count}
                   </span>
@@ -388,10 +388,10 @@ export default function ExtractTab({ data }: ExtractTabProps) {
                   className="flex items-baseline gap-1.5"
                   style={{ paddingLeft: `${(h.level - 1) * 12}px` }}
                 >
-                  <span className="shrink-0 rounded bg-slate-700 px-1 py-0.5 text-[9px] font-mono text-slate-400">
+                  <span className="shrink-0 rounded bg-slate-700 px-1 py-0.5 text-[11px] font-mono text-slate-400">
                     {h.tag}
                   </span>
-                  <span className="truncate text-xs text-slate-300">
+                  <span className="truncate text-[13px] text-slate-300">
                     {h.text || (
                       <span className="italic text-red-400">(empty)</span>
                     )}
@@ -410,14 +410,14 @@ export default function ExtractTab({ data }: ExtractTabProps) {
         count={data.links.length}
       >
         <div className="mb-2 flex flex-wrap gap-1.5">
-          <span className="rounded bg-slate-700 px-1.5 py-0.5 text-[10px] text-slate-300">
+          <span className="rounded bg-slate-700 px-1.5 py-0.5 text-xs text-slate-300">
             Internal: {internalLinks.length}
           </span>
-          <span className="rounded bg-slate-700 px-1.5 py-0.5 text-[10px] text-slate-300">
+          <span className="rounded bg-slate-700 px-1.5 py-0.5 text-xs text-slate-300">
             External: {externalLinks.length}
           </span>
           {nofollowLinks.length > 0 && (
-            <span className="rounded bg-amber-400/10 px-1.5 py-0.5 text-[10px] text-amber-400">
+            <span className="rounded bg-amber-400/10 px-1.5 py-0.5 text-xs text-amber-400">
               Nofollow: {nofollowLinks.length}
             </span>
           )}
@@ -426,16 +426,16 @@ export default function ExtractTab({ data }: ExtractTabProps) {
           <>
             <button
               onClick={() => setShowAllLinks(!showAllLinks)}
-              className="text-[11px] text-indigo-400 hover:underline"
+              className="text-xs text-indigo-400 hover:underline"
             >
               {showAllLinks ? 'Hide all' : 'View all'}
             </button>
             {showAllLinks && (
               <div className="mt-2 flex max-h-60 flex-col gap-1 overflow-y-auto">
                 {data.links.map((link, i) => (
-                  <div key={i} className="flex items-center gap-1.5 text-xs">
+                  <div key={i} className="flex items-center gap-1.5 text-[13px]">
                     <span
-                      className={`shrink-0 rounded px-1 py-0.5 text-[9px] ${link.isExternal ? 'bg-blue-400/10 text-blue-400' : 'bg-slate-700 text-slate-400'}`}
+                      className={`shrink-0 rounded px-1 py-0.5 text-[11px] ${link.isExternal ? 'bg-blue-400/10 text-blue-400' : 'bg-slate-700 text-slate-400'}`}
                     >
                       {link.isExternal ? 'ext' : 'int'}
                     </span>
@@ -457,15 +457,15 @@ export default function ExtractTab({ data }: ExtractTabProps) {
         count={data.images.length}
       >
         <div className="mb-2 flex flex-wrap gap-1.5">
-          <span className="rounded bg-slate-700 px-1.5 py-0.5 text-[10px] text-slate-300">
+          <span className="rounded bg-slate-700 px-1.5 py-0.5 text-xs text-slate-300">
             Total: {data.images.length}
           </span>
           <span
-            className={`rounded px-1.5 py-0.5 text-[10px] ${imagesMissingAlt.length > 0 ? 'bg-red-400/10 text-red-400' : 'bg-green-400/10 text-green-400'}`}
+            className={`rounded px-1.5 py-0.5 text-xs ${imagesMissingAlt.length > 0 ? 'bg-red-400/10 text-red-400' : 'bg-green-400/10 text-green-400'}`}
           >
             Missing alt: {imagesMissingAlt.length}
           </span>
-          <span className="rounded bg-slate-700 px-1.5 py-0.5 text-[10px] text-slate-300">
+          <span className="rounded bg-slate-700 px-1.5 py-0.5 text-xs text-slate-300">
             No dimensions: {imagesNoDimensions.length}
           </span>
         </div>
@@ -473,7 +473,7 @@ export default function ExtractTab({ data }: ExtractTabProps) {
           <>
             <button
               onClick={() => setShowAllImages(!showAllImages)}
-              className="text-[11px] text-indigo-400 hover:underline"
+              className="text-xs text-indigo-400 hover:underline"
             >
               {showAllImages ? 'Hide all' : 'View all'}
             </button>
@@ -494,7 +494,7 @@ export default function ExtractTab({ data }: ExtractTabProps) {
                         }}
                       />
                     </div>
-                    <div className="p-2 text-xs">
+                    <div className="p-2 text-[13px]">
                       <p className="truncate text-slate-300" title={img.src}>
                         {img.src}
                       </p>

@@ -35,11 +35,11 @@ export default function PixelesqCTA({ hasIssues }: PixelesqCTAProps) {
       </button>
       <div className="mb-2 flex items-center gap-2">
         <Sparkles size={14} className="text-indigo-400" />
-        <span className="text-xs font-semibold text-slate-200">
+        <span className="text-sm font-semibold text-slate-200">
           Fix these issues automatically
         </span>
       </div>
-      <p className="mb-3 text-xs text-slate-400">
+      <p className="mb-3 text-[13px] text-slate-400">
         Pixelesq's AI-native platform handles meta tags, schema, and SEO
         optimization across all your pages.
       </p>
@@ -47,7 +47,7 @@ export default function PixelesqCTA({ hasIssues }: PixelesqCTAProps) {
         href="https://pixelesq.com?utm_source=argus&utm_medium=extension&utm_campaign=audit_cta"
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center gap-1 rounded-md bg-indigo-500 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-indigo-600"
+        className="inline-flex items-center gap-1 rounded-md bg-indigo-500 px-3 py-1.5 text-[13px] font-medium text-white transition-colors hover:bg-indigo-600"
       >
         Learn More &rarr;
       </a>

@@ -106,7 +106,7 @@ export default function AuditTab({ report }: AuditTabProps) {
       {/* Score */}
       <div className="relative flex flex-col items-center gap-4 border-b border-slate-800 px-4 py-6">
         <ScoreGauge score={report.score} />
-        <p className="text-xs text-slate-400">
+        <p className="text-sm text-slate-400">
           {report.score >= 90
             ? 'Excellent SEO health'
             : report.score >= 70
@@ -119,7 +119,7 @@ export default function AuditTab({ report }: AuditTabProps) {
 
       {/* Category breakdown */}
       <div className="border-b border-slate-800 px-4 py-3">
-        <p className="mb-2 text-[10px] font-medium uppercase tracking-wide text-slate-500">
+        <p className="mb-2 text-xs font-medium uppercase tracking-wide text-slate-500">
           Category Scores
         </p>
         <div className="flex flex-col gap-1.5">
@@ -127,7 +127,7 @@ export default function AuditTab({ report }: AuditTabProps) {
             Object.entries(report.categoryScores) as [AuditCategory, number][]
           ).map(([category, score]) => (
             <div key={category} className="flex items-center gap-2">
-              <span className="w-24 text-[11px] text-slate-400">
+              <span className="w-24 text-xs text-slate-400">
                 {CATEGORY_LABELS[category]}
               </span>
               <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-slate-700">
@@ -136,7 +136,7 @@ export default function AuditTab({ report }: AuditTabProps) {
                   style={{ width: `${score}%` }}
                 />
               </div>
-              <span className="w-8 text-right text-[10px] font-medium text-slate-400">
+              <span className="w-8 text-right text-xs font-medium text-slate-400">
                 {score}
               </span>
             </div>
@@ -154,7 +154,7 @@ export default function AuditTab({ report }: AuditTabProps) {
                 <button
                   key={severity}
                   onClick={() => toggleSeverity(severity)}
-                  className={`rounded-md border px-2 py-1 text-[11px] font-medium capitalize transition-colors ${
+                  className={`rounded-md border px-2 py-1 text-xs font-medium capitalize transition-colors ${
                     isActive
                       ? SEVERITY_COLORS[severity].active
                       : 'border-slate-700 bg-slate-800 text-slate-500'
@@ -179,11 +179,11 @@ export default function AuditTab({ report }: AuditTabProps) {
             placeholder="Search rules..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full rounded-md bg-slate-800 py-1.5 pl-7 pr-2.5 text-xs text-slate-200 placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
+            className="w-full rounded-md bg-slate-800 py-1.5 pl-7 pr-2.5 text-sm text-slate-200 placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
           />
         </div>
         {isFiltered && (
-          <p className="mt-1.5 text-[10px] text-slate-500">
+          <p className="mt-1.5 text-xs text-slate-500">
             Showing {filteredResults.length} of {report.results.length} checks
           </p>
         )}
@@ -197,7 +197,7 @@ export default function AuditTab({ report }: AuditTabProps) {
 
           return (
             <div key={category} className="mb-4">
-              <p className="mb-1.5 text-[11px] font-semibold text-slate-300">
+              <p className="mb-1.5 text-[13px] font-semibold text-slate-300">
                 {CATEGORY_LABELS[category]}
               </p>
               <div className="flex flex-col gap-1.5">
@@ -209,7 +209,7 @@ export default function AuditTab({ report }: AuditTabProps) {
           );
         })}
         {filteredResults.length === 0 && (
-          <p className="py-4 text-center text-xs text-slate-500">
+          <p className="py-4 text-center text-sm text-slate-500">
             No results match your filters.
           </p>
         )}

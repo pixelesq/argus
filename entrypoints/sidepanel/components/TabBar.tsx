@@ -20,7 +20,7 @@ export default function TabBar({ activeTab, onTabChange }: TabBarProps) {
         <button
           key={tab.id}
           onClick={() => onTabChange(tab.id)}
-          className={`flex flex-1 items-center justify-center gap-1.5 text-xs font-medium transition-colors ${
+          className={`flex flex-1 items-center justify-center gap-1.5 text-sm font-medium transition-colors ${
             activeTab === tab.id
               ? 'border-b-2 border-indigo-400 text-indigo-400'
               : 'text-slate-400 hover:text-slate-200'
