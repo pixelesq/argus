@@ -24,10 +24,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/ArslanYM/argus",
+    "url": "https://github.com/pixelesq/argus",
     "directory": "mcp-server"
   },
-  "homepage": "https://github.com/ArslanYM/argus/tree/main/mcp-server",
+  "homepage": "https://www.getargus.app",
   "scripts": {
     "build": "tsup src/index.ts --format esm --out-dir build --clean",
     "dev": "tsup src/index.ts --format esm --out-dir build --watch",

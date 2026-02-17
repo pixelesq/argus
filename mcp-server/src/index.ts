@@ -20,7 +20,7 @@ async function fetchAndExtract(url: string): Promise<PageExtraction> {
   const response = await fetch(url, {
     headers: {
       'User-Agent':
-        'Mozilla/5.0 (compatible; ArgusSEO/1.0; +https://github.com/ArslanYM/argus)',
+        'Mozilla/5.0 (compatible; ArgusSEO/1.0; +https://github.com/pixelesq/argus)',
     },
   });
 
