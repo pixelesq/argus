@@ -157,7 +157,7 @@ content.ts (DOM APIs)               fetch() + cheerio (HTML parsing)
 
 1. Clone and build:
    ```bash
-   git clone https://github.com/ArslanYM/argus.git
+   git clone https://github.com/pixelesq/argus.git
    cd argus
    npm install
    npm run build
