@@ -1,6 +1,6 @@
 {
   "name": "@pixelesq/argus-mcp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "MCP server for SEO auditing — use with Claude Code, Cursor, or any MCP client to audit any webpage's SEO from your terminal.",
   "type": "module",
   "license": "MIT",
