@@ -10,9 +10,11 @@
 
 ### The All-Seeing SEO Inspector for Chrome
 
-**See everything search engines see. Fix what they don't like. Powered by on-device AI.**
+**See everything search engines see. Fix what they don't like. Powered by Claude Opus 4.6 and on-device AI.**
 
-Argus is a free Chrome extension by [Pixelesq](https://pixelesq.com) that extracts every meta tag on any page, runs 40+ SEO audit checks in seconds, and delivers AI-powered insights — all without your data ever leaving your browser. Whether you're a seasoned SEO professional, a developer shipping production sites, or a marketer making sure every share card looks perfect, Argus gives you the clarity you need in a single click.
+Argus is a free Chrome extension by [Pixelesq](https://pixelesq.com) that extracts every meta tag on any page, runs 40+ SEO audit checks in seconds, and delivers AI-powered insights — from Claude Opus 4.6 deep analysis to Chrome's on-device Gemini Nano. Whether you're a seasoned SEO professional, a developer shipping production sites, or a marketer making sure every share card looks perfect, Argus gives you the clarity you need in a single click.
+
+Now available as a Chrome extension **and** an MCP server for Claude Code, Cursor, and Windsurf.
 
 No account. No subscription. No catch. Just install and see everything.
 
@@ -72,16 +74,16 @@ A meta tag extractor tells you what's there. An SEO audit tool tells you what's 
 - **Pass / Warning / Fail indicators** for every check, with clear explanations of why each rule matters
 - **Actionable recommendations** — not just "this is wrong" but "here's what to do about it"
 
-### Insights — AI That Never Leaves Your Browser
+### Insights — Three-Tier AI, From Cloud to On-Device
 
 <!-- Icon suggestion: sparkle/star or brain icon -->
 
-This is where Argus goes beyond every other free SEO tool. The Insights tab uses Chrome's built-in Gemini Nano model to analyze your page and generate intelligent recommendations — entirely on-device. Your content never hits an external server. No API keys. No token limits. No privacy trade-offs.
+This is where Argus goes beyond every other free SEO tool. The Insights tab offers a three-tier AI system that meets you where you are — from Claude Opus 4.6's deep strategic analysis to Chrome's on-device Gemini Nano, with a static fallback that always works.
 
-- **Meta description rewriting** — AI generates optimized, click-worthy meta descriptions tailored to your page content
-- **Title tag improvement** — get alternative title suggestions that balance keyword relevance with compelling copy
-- **On-device processing** — Gemini Nano runs locally through Chrome's built-in AI APIs, so your page content stays private
-- **Zero data transmission** — no analytics, no tracking, no third-party calls. Ever.
+- **Claude Opus 4.6 (BYOK)** — bring your own API key for the deepest analysis: SEO strategy briefs, schema markup generation, technical fix code, content gap analysis, and competitor insights. Streaming responses in real time.
+- **Gemini Nano (on-device)** — page classification, meta description assessment, and content quality analysis running entirely in your browser. No API key needed.
+- **Shared actions** — meta description rewriting, title improvement, FAQ schema generation, and schema type recommendations work with both AI providers.
+- **Static fallback** — content assessment, missing tag checklist, and rule-based schema recommendations. Always available, even offline.
 
 <!-- End Three Pillars -->
 
@@ -143,11 +145,15 @@ Not all SEO issues carry equal weight. Argus scores your page across 10 distinct
 
 ### AI-Powered Meta Description Rewriting
 
-Writing compelling meta descriptions is tedious. Let Gemini Nano do the heavy lifting. Argus generates optimized meta description suggestions based on your actual page content — and the AI runs entirely on-device, so your content stays private.
+Writing compelling meta descriptions is tedious. Let Claude Opus 4.6 or Gemini Nano do the heavy lifting. Argus generates optimized meta description suggestions based on your actual page content — with Claude for the deepest analysis, or Gemini Nano running entirely on-device for complete privacy.
 
-### On-Device AI — Zero Data Leaves Your Browser
+### Claude Opus 4.6 Deep Analysis (BYOK)
 
-Unlike cloud-dependent SEO tools, Argus leverages Chrome's built-in Gemini Nano for all AI features. Your page content is never sent to an external server. No API keys to manage. No usage limits. No privacy compromises. This is what an AI SEO extension should look like.
+Bring your own Anthropic API key and unlock the most powerful SEO analysis available in any browser extension. Opus 4.6 generates SEO strategy briefs, complete JSON-LD schema markup, technical HTML fixes, content gap analysis, and competitor insights — all streamed in real time. Your key stays in your browser.
+
+### MCP Server for Claude Code, Cursor & Windsurf
+
+The same audit engine is available as an npm package (`@pixelesq/argus-mcp`) that gives AI coding tools four SEO tools: audit, extract, compare, and raw JSON export. One command to install: `claude mcp add argus-seo -- npx -y @pixelesq/argus-mcp`.
 
 ### Export as JSON or Formatted Text
 
@@ -175,9 +181,9 @@ Argus is completely free. Not freemium. Not "free for 7 days." Every feature —
 
 We built Argus with a strict no-collection policy. The extension contains no analytics, no tracking pixels, no telemetry, and no outbound API calls. Your browsing data stays in your browser. Period. In an era where most tools monetize your data, Argus monetizes nothing — because it's a free tool built by practitioners who care about the craft.
 
-### AI-Powered with Gemini Nano, Entirely On-Device
+### Three-Tier AI: Claude Opus 4.6, Gemini Nano, and Static
 
-The AI features in Argus aren't powered by a remote server — they run on Chrome's built-in Gemini Nano model, directly on your device. That means AI-generated meta description suggestions and title improvements happen locally, with zero latency from network round-trips and zero risk of your content being processed externally. Private, fast, and genuinely intelligent.
+Argus gives you the best of both worlds. Bring your own Claude API key for Opus 4.6's deep strategic analysis — SEO strategy briefs, schema generation, technical fixes, content gaps, and competitor insights streamed in real time. Prefer on-device? Chrome's built-in Gemini Nano handles classification, meta assessment, and content quality without any network calls. No AI at all? The static fallback always delivers content assessment and actionable checklists. You choose the tier that fits your workflow.
 
 ### Built by SEO Practitioners at Pixelesq
 
@@ -197,7 +203,7 @@ Install Argus and start seeing what search engines, social platforms, and AI mod
 
 **[Install Argus Free from Chrome Web Store](#chrome-web-store-link)**
 
-Already installed? Read the [Complete Guide](/guide) to unlock every feature, including how to enable AI-powered insights with Gemini Nano.
+Already installed? Read the [Complete Guide](/guide) to unlock every feature, including how to configure Claude Opus 4.6 and enable on-device AI with Gemini Nano.
 
 <!-- End CTA -->
 

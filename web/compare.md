@@ -37,10 +37,15 @@ A side-by-side feature matrix comparing Argus with the most popular free SEO Chr
 | **Image alt text audit** | Yes, with missing/present counts | Basic | Basic | No | Basic |
 | **Comprehensive SEO audit** | 40+ rules with scoring | Limited | Limited | No | Limited |
 | **Weighted scoring system (0-100)** | Yes, across 10 categories | No | No | No | No |
-| **AI-powered insights** | Yes — Gemini Nano, on-device | No | No | No | No |
+| **AI-powered insights** | Yes — Claude Opus 4.6 (BYOK) + Gemini Nano (on-device) | No | No | No | No |
 | **AI meta description rewriting** | Yes | No | No | No | No |
 | **AI title suggestions** | Yes | No | No | No | No |
 | **FAQ schema generation** | Yes, via AI | No | No | No | No |
+| **AI schema markup generation** | Yes (Claude-exclusive) | No | No | No | No |
+| **AI technical fix code** | Yes (Claude-exclusive) | No | No | No | No |
+| **AI content gap analysis** | Yes (Claude-exclusive) | No | No | No | No |
+| **AI competitor insights** | Yes (Claude-exclusive) | No | No | No | No |
+| **MCP server for AI coding tools** | Yes — Claude Code, Cursor, Windsurf | No | No | No | No |
 | **Export as JSON** | Yes | Partial | No | No | Partial |
 | **Export as formatted text table** | Yes | No | No | No | No |
 | **Side panel UI** | Yes — persistent, alongside page | No — popup | No — popup | No — popup | No — popup |
@@ -48,6 +53,7 @@ A side-by-side feature matrix comparing Argus with the most popular free SEO Chr
 | **Dark theme** | Yes | No | Yes | No | No |
 | **Privacy (no data collection)** | Yes — zero network calls | Varies | Varies | Varies | Varies |
 | **Manifest V3** | Yes | Varies | Yes | Varies | Varies |
+| **Cloud AI (BYOK)** | Yes — Claude Opus 4.6 with user's own API key | No | No | No | No |
 | **On-device AI** | Yes — Chrome built-in Gemini Nano | No | No | No | No |
 | **Free** | Yes | Yes | Yes | Yes | Yes |
 | **Price for premium features** | N/A — fully free, no premium tier | Free (no premium) | Free (no premium) | Free (no premium) | Free with some premium features |
@@ -66,7 +72,7 @@ A side-by-side feature matrix comparing Argus with the most popular free SEO Chr
 
 Where Argus differs is in depth and capability. While SEO Meta in 1 Click focuses primarily on tag extraction, Argus extends into comprehensive auditing and AI-powered analysis. Argus runs over 40 rule-based SEO checks the moment you open the panel, scoring each page from 0 to 100 across 10 weighted categories. This means you're not just seeing what tags exist — you're getting an immediate assessment of whether those tags are well-optimized and what's missing. SEO Meta in 1 Click tells you what's on the page; Argus tells you what's on the page, what's wrong, what's missing, and what to do about it.
 
-Argus also introduces capabilities that SEO Meta in 1 Click doesn't offer: live social share preview cards that show how your page will appear on Facebook, Twitter/X, and LinkedIn; JSON-LD validation with full syntax highlighting; and AI-powered meta description and title rewriting through Chrome's built-in Gemini Nano model. These AI features run entirely on-device, so your page content never leaves your browser — a meaningful distinction for professionals working with client sites or sensitive content.
+Argus also introduces capabilities that SEO Meta in 1 Click doesn't offer: live social share preview cards that show how your page will appear on Facebook, Twitter/X, and LinkedIn; JSON-LD validation with full syntax highlighting; and a three-tier AI system — Claude Opus 4.6 for deep strategic analysis (BYOK), Chrome's Gemini Nano for on-device processing, and a static fallback. Claude-exclusive features include SEO strategy briefs, complete schema markup generation, and technical fix code. These AI capabilities are unique in the Chrome extension SEO space.
 
 The UI model is different as well. SEO Meta in 1 Click uses a popup window that closes when you click elsewhere on the page. Argus runs in Chrome's side panel, which stays open alongside your page as you browse, automatically refreshing its analysis whenever you navigate to a new URL. For workflows that involve auditing multiple pages in sequence — a common pattern in technical SEO — the persistent side panel eliminates the friction of reopening the tool on every page.
 
@@ -84,7 +90,7 @@ If you value simplicity and a lightweight footprint above all else, SEO Meta in 
 
 Argus and Detailed SEO Extension share a similar ambition: to give SEO professionals a comprehensive view of on-page health. Where they diverge is in auditing depth and AI capability. Argus runs 40+ automated checks and produces a weighted score from 0 to 100, broken down across 10 categories. This scoring system is designed to help you prioritize — not every issue carries the same weight, and the scoring reflects that. Detailed SEO Extension surfaces useful data but leaves more of the interpretation and prioritization to the user.
 
-The most significant differentiator is AI. Argus integrates Chrome's built-in Gemini Nano model to provide on-device AI insights, including meta description rewriting, title tag suggestions, and FAQ schema generation. These features run locally — no data leaves your browser, no API keys are required, and there are no usage limits. Detailed SEO Extension does not currently offer AI-powered features.
+The most significant differentiator is AI. Argus offers a three-tier AI system: Claude Opus 4.6 (BYOK) for deep strategic analysis including SEO strategy briefs, schema generation, and technical fix code; Chrome's Gemini Nano for on-device insights; and a static fallback. Detailed SEO Extension does not currently offer AI-powered features of any kind.
 
 Argus also handles structured data differently. JSON-LD blocks are extracted, validated, and displayed with full syntax highlighting, making it straightforward to read and debug schema.org markup directly within the extension. Social share previews are another area where Argus adds functionality — live rendered cards showing how your page will appear when shared on major platforms.
 
@@ -122,7 +128,7 @@ Argus and SEO Minion overlap in some areas — both extract meta tags, analyze h
 
 The auditing and scoring system in Argus is a key differentiator. While SEO Minion provides useful checks, Argus runs 40+ rule-based audits and produces a weighted score from 0 to 100 across 10 categories. This gives you a quantifiable baseline for page quality that you can track over time and compare across pages on a site. The scoring model is weighted to reflect real-world ranking factors, so you can focus your effort where it matters most.
 
-Argus's AI capabilities — meta description rewriting, title tag suggestions, and FAQ schema generation via Gemini Nano — are unique in this category. These features run entirely on-device through Chrome's built-in AI APIs, meaning there are no external API calls, no usage caps, and no privacy concerns. SEO Minion does not currently offer AI-powered features.
+Argus's AI capabilities are unique in this category. With Claude Opus 4.6 (BYOK), you get SEO strategy briefs, schema markup generation, technical fix code, content gap analysis, and competitor insights. With Gemini Nano, you get on-device analysis with no external calls. SEO Minion does not currently offer AI-powered features of any kind.
 
 The two extensions serve somewhat different primary use cases. If SERP simulation, hreflang validation, and search location testing are central to your workflow, SEO Minion covers ground that Argus does not. If your priority is deep meta tag extraction, structured data validation, comprehensive auditing with scoring, and AI-driven content recommendations — all in a privacy-first side panel — Argus is purpose-built for that workflow. Many SEO professionals may find value in having both installed for different tasks.
 
@@ -138,9 +144,9 @@ Every tool in this comparison offers genuine value. Here are the areas where Arg
 
 <!-- Developer note: Render these as a visually distinct list or card grid. Each item should feel like a key differentiator, not a bullet in a wall of text. -->
 
-### Only Extension with On-Device AI (Gemini Nano)
+### Only Extension with Claude Opus 4.6 + On-Device AI
 
-Argus is the only SEO Chrome extension that integrates Chrome's built-in Gemini Nano model for AI-powered analysis. Meta description rewriting, title suggestions, and FAQ schema generation all run locally on your device. No cloud dependency, no API keys, no usage limits, and no data ever leaves your browser.
+Argus is the only SEO Chrome extension with a three-tier AI system. Bring your own Claude API key for Opus 4.6's deep strategic analysis — SEO strategy briefs, schema markup generation, technical fix code, content gap analysis, and competitor insights. Or use Chrome's built-in Gemini Nano for fully on-device analysis with zero network calls. No other extension offers either capability, let alone both.
 
 ### Only Extension with Weighted SEO Scoring (0-100)
 
@@ -152,7 +158,11 @@ See exactly how your page will render when shared on Facebook, Twitter/X, and Li
 
 ### Only Extension with AI-Powered Content Rewriting
 
-Generate optimized meta descriptions, improved title tags, and FAQ schema markup using AI that runs entirely on your device. No copying and pasting into ChatGPT. No external tools. The AI reads your actual page content and produces contextually relevant suggestions in seconds.
+Generate optimized meta descriptions, improved title tags, and FAQ schema markup using AI. With Claude Opus 4.6, you also get complete JSON-LD schema generation and ready-to-paste technical fix code. No copying and pasting into ChatGPT. No external tools. The AI reads your actual page content and produces contextually relevant suggestions in seconds.
+
+### Only Extension with an MCP Server
+
+Argus ships as both a Chrome extension and an npm-published MCP server (`@pixelesq/argus-mcp`). This means Claude Code, Cursor, and Windsurf can audit SEO, extract meta tags, compare URLs, and export raw data — all from the terminal. One command to install: `claude mcp add argus-seo -- npx -y @pixelesq/argus-mcp`.
 
 ### Side Panel UI That Stays Open While You Browse
 
@@ -186,9 +196,9 @@ Detailed SEO Extension, built by the team behind Detailed.com, provides particul
 
 SEO Minion offers SERP result simulation, hreflang tag validation, and Google search location testing — capabilities that Argus does not currently provide. If international SEO or SERP appearance testing is part of your regular work, SEO Minion fills that gap.
 
-### Argus's AI Features Require Chrome 138+ with Gemini Nano
+### Argus's Full AI Requires a Claude API Key or Chrome 138+
 
-The AI-powered insights in Argus — meta description rewriting, title suggestions, and FAQ schema generation — depend on Chrome's built-in Gemini Nano model. This requires Chrome version 138 or later and a device that supports on-device AI. If your browser or hardware doesn't meet these requirements, the AI features won't be available (though all other Argus features — extraction, auditing, scoring — work on any modern Chrome version with no restrictions).
+The most powerful AI features (SEO strategy briefs, schema generation, technical fixes, content gaps, competitor insights) require a Claude API key (BYOK). On-device AI via Gemini Nano requires Chrome 138+ and compatible hardware. Without either, the extension still provides full extraction, auditing, and scoring — plus a static analysis fallback in the Insights tab.
 
 <!-- End Where Others May Be Better -->
 

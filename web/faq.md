@@ -32,7 +32,7 @@ Whether you want to know how to check meta tags, understand how the SEO audit sc
       "name": "What is Argus?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Argus is a free Chrome extension built by Pixelesq that extracts meta tags, runs 40+ SEO audit checks, and provides AI-powered insights — all within your browser. It opens as a side panel alongside any webpage, giving you instant visibility into title tags, meta descriptions, Open Graph tags, Twitter Cards, JSON-LD structured data, heading hierarchy, links, and images. The AI features are powered by Chrome's built-in Gemini Nano model, so your data never leaves your device."
+        "text": "Argus is a free Chrome extension and MCP server built by Pixelesq that extracts meta tags, runs 40+ SEO audit checks, and provides AI-powered insights using Claude Opus 4.6 or Chrome's Gemini Nano. The extension opens as a side panel alongside any webpage. The MCP server (@pixelesq/argus-mcp) gives Claude Code, Cursor, and Windsurf the same audit engine from the terminal."
       }
     },
     {
@@ -104,7 +104,15 @@ Whether you want to know how to check meta tags, understand how the SEO audit sc
       "name": "How do I enable AI insights?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "AI insights use Chrome's built-in Gemini Nano model. To enable them, you need Chrome version 127 or later. Navigate to chrome://flags, search for 'Prompt API for Gemini Nano,' enable it, and restart Chrome. The first time you use AI features, Chrome will download the Gemini Nano model in the background. Once ready, the Insights tab in Argus will show AI-powered suggestions."
+        "text": "Argus offers two AI options. The recommended approach is to add your own Claude API key: open the Insights tab, click the Settings icon, and enter your Anthropic API key. For on-device AI, use Chrome's Gemini Nano: update to Chrome 138+, enable the Prompt API flag at chrome://flags, and restart Chrome. Claude provides the deepest analysis including SEO strategy briefs, schema generation, and technical fixes. Gemini Nano runs fully on-device with no API key needed."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the Claude Opus 4.6 BYOK feature?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "BYOK means Bring Your Own Key. You can enter your own Anthropic API key in Argus Settings to unlock Claude Opus 4.6 analysis. This provides the most powerful SEO insights: strategy briefs, schema markup generation, technical fix code, content gap analysis, and competitor insights. Your key is stored locally, never sent to Pixelesq, and API calls go directly from your browser to Anthropic."
       }
     },
     {
@@ -112,7 +120,15 @@ Whether you want to know how to check meta tags, understand how the SEO audit sc
       "name": "What Chrome version do I need for AI features?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "AI-powered insights in Argus require Chrome version 127 or later, which includes support for the built-in Gemini Nano model. You can check your Chrome version by navigating to chrome://settings/help. All non-AI features (meta tag extraction, SEO audit, social previews) work on any recent version of Chrome."
+        "text": "Claude Opus 4.6 works on any Chrome version — it only requires an Anthropic API key. Gemini Nano on-device AI requires Chrome 138 or later. All non-AI features (meta tag extraction, SEO audit, social previews) work on any recent version of Chrome."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the Argus MCP server?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Argus ships as @pixelesq/argus-mcp on npm, an MCP server that gives AI coding tools (Claude Code, Cursor, Windsurf) four SEO tools: seo_audit, extract_meta, compare_seo, and extract_json. Install with one command: claude mcp add argus-seo -- npx -y @pixelesq/argus-mcp. The MCP server uses the same 40+ rule audit engine as the Chrome extension."
       }
     },
     {
@@ -128,7 +144,7 @@ Whether you want to know how to check meta tags, understand how the SEO audit sc
       "name": "Can I use Argus without the AI features?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Absolutely. The AI insights are optional. The Extract tab (meta tag extraction, Open Graph, Twitter Cards, JSON-LD, headings, links, images) and the Audit tab (40+ SEO checks with scoring) work fully without Gemini Nano. You only need AI enabled for the Insights tab, which provides meta description rewrites and title suggestions."
+        "text": "Absolutely. The AI insights are optional. The Extract tab (meta tag extraction, Open Graph, Twitter Cards, JSON-LD, headings, links, images) and the Audit tab (40+ SEO checks with scoring) work fully without any AI provider. The Insights tab also provides a static analysis fallback with content assessment, missing tag checklists, and schema recommendations — no AI required."
       }
     },
     {
@@ -232,7 +248,7 @@ Whether you want to know how to check meta tags, understand how the SEO audit sc
       "name": "Does Argus send data to external servers?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. Argus makes zero outbound network requests. There are no API calls, no cloud processing, and no server-side components. The extension operates entirely within your browser. Even the AI features run on-device using Chrome's built-in Gemini Nano model, so your page content never leaves your machine."
+        "text": "By default, no. All extraction and auditing runs locally. If you choose to configure a Claude API key, page metadata is sent directly from your browser to Anthropic's API (api.anthropic.com) for AI analysis. This is entirely opt-in — no calls are made without your API key. Gemini Nano runs fully on-device. Argus never sends data to any Pixelesq server."
       }
     },
     {
@@ -248,7 +264,7 @@ Whether you want to know how to check meta tags, understand how the SEO audit sc
       "name": "Where does the AI processing happen?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "All AI processing in Argus happens on your device using Chrome's built-in Gemini Nano model. Gemini Nano is a small language model that runs locally inside Chrome — no internet connection is required after the initial model download. Your page content is processed entirely on-device, ensuring complete privacy with zero data transmission to external servers."
+        "text": "Argus has two AI options. Claude Opus 4.6 processes requests via Anthropic's cloud API — calls go directly from your browser to api.anthropic.com when you provide your own API key. Gemini Nano runs entirely on your device using Chrome's built-in model with no network calls. In both cases, Pixelesq never sees or processes your data."
       }
     },
     {
@@ -305,7 +321,7 @@ Whether you want to know how to check meta tags, understand how the SEO audit sc
 
 ### What is Argus?
 
-Argus is a free Chrome extension built by [Pixelesq](https://pixelesq.com) that extracts meta tags, runs 40+ SEO audit checks, and provides AI-powered insights — all within your browser. It opens as a side panel alongside any webpage, giving you instant visibility into title tags, meta descriptions, Open Graph tags, Twitter Cards, JSON-LD structured data, heading hierarchy, links, and images. The AI features are powered by Chrome's built-in Gemini Nano model, so your data never leaves your device.
+Argus is a free Chrome extension and MCP server built by [Pixelesq](https://pixelesq.com) that extracts meta tags, runs 40+ SEO audit checks, and provides AI-powered insights using Claude Opus 4.6 or Chrome's Gemini Nano. The extension opens as a side panel alongside any webpage, giving you instant visibility into title tags, meta descriptions, Open Graph tags, Twitter Cards, JSON-LD structured data, heading hierarchy, links, and images. The MCP server (`@pixelesq/argus-mcp`) gives Claude Code, Cursor, and Windsurf the same audit engine from the terminal.
 
 ### Is Argus free?
 
@@ -349,11 +365,19 @@ Chrome restricts all extensions from running on internal browser pages (chrome:/
 
 ### How do I enable AI insights?
 
-AI insights use Chrome's built-in Gemini Nano model. To enable them, you need Chrome version 127 or later. Navigate to `chrome://flags`, search for "Prompt API for Gemini Nano," enable it, and restart Chrome. The first time you use AI features, Chrome will download the Gemini Nano model in the background. Once ready, the Insights tab in Argus will show AI-powered suggestions.
+Argus offers two AI options. The recommended approach is to add your own Claude API key: open the Insights tab, click the Settings (gear) icon, and enter your Anthropic API key. For on-device AI, use Chrome's Gemini Nano: update to Chrome 138+, enable the Prompt API flag at `chrome://flags/#prompt-api-for-gemini-nano`, and restart Chrome. Claude provides the deepest analysis including SEO strategy briefs, schema generation, and technical fixes. Gemini Nano runs fully on-device with no API key needed.
+
+### What is the Claude Opus 4.6 BYOK feature?
+
+BYOK means "Bring Your Own Key." You can enter your own Anthropic API key in Argus Settings to unlock Claude Opus 4.6 analysis. This provides the most powerful SEO insights available: strategy briefs, schema markup generation, technical fix code, content gap analysis, and competitor insights. Your key is stored locally in `chrome.storage.local`, never sent to Pixelesq, and API calls go directly from your browser to `api.anthropic.com`.
 
 ### What Chrome version do I need for AI features?
 
-AI-powered insights in Argus require Chrome version 127 or later, which includes support for the built-in Gemini Nano model. You can check your Chrome version by navigating to `chrome://settings/help`. All non-AI features (meta tag extraction, SEO audit, social previews) work on any recent version of Chrome.
+Claude Opus 4.6 works on any Chrome version — it only requires an Anthropic API key. Gemini Nano on-device AI requires Chrome 138 or later. All non-AI features (meta tag extraction, SEO audit, social previews) work on any recent version of Chrome.
+
+### What is the Argus MCP server?
+
+Argus ships as `@pixelesq/argus-mcp` on npm, an MCP (Model Context Protocol) server that gives AI coding tools four SEO tools: `seo_audit`, `extract_meta`, `compare_seo`, and `extract_json`. Install with one command: `claude mcp add argus-seo -- npx -y @pixelesq/argus-mcp`. The MCP server uses the same 40+ rule audit engine as the Chrome extension and works with Claude Code, Cursor, and Windsurf.
 
 ### How big is the Gemini Nano model download?
 
@@ -361,7 +385,7 @@ The Gemini Nano model is approximately 1.7 GB. Chrome downloads it in the backgr
 
 ### Can I use Argus without the AI features?
 
-Absolutely. The AI insights are optional. The Extract tab (meta tag extraction, Open Graph, Twitter Cards, JSON-LD, headings, links, images) and the Audit tab (40+ SEO checks with scoring) work fully without Gemini Nano. You only need AI enabled for the Insights tab, which provides meta description rewrites and title suggestions.
+Absolutely. The AI insights are optional. The Extract tab (meta tag extraction, Open Graph, Twitter Cards, JSON-LD, headings, links, images) and the Audit tab (40+ SEO checks with scoring) work fully without any AI provider. The Insights tab also provides a static analysis fallback with content assessment, missing tag checklists, and schema recommendations — no AI required.
 
 <!-- End Installation & Setup -->
 
@@ -429,7 +453,7 @@ No. Argus has a strict zero data collection policy. The extension contains no an
 
 ### Does Argus send data to external servers?
 
-No. Argus makes zero outbound network requests. There are no API calls, no cloud processing, and no server-side components. The extension operates entirely within your browser. Even the AI features run on-device using Chrome's built-in Gemini Nano model, so your page content never leaves your machine.
+By default, no. All extraction and auditing runs locally. If you choose to configure a Claude API key, page metadata is sent directly from your browser to Anthropic's API (`api.anthropic.com`) for AI analysis. This is entirely opt-in — no calls are made without your API key. Gemini Nano runs fully on-device. Argus never sends data to any Pixelesq server.
 
 ### Does Argus include analytics or tracking?
 
@@ -437,11 +461,11 @@ No. Argus contains no Google Analytics, no Mixpanel, no Segment, no tracking pix
 
 ### Where does the AI processing happen?
 
-All AI processing in Argus happens on your device using Chrome's built-in Gemini Nano model. Gemini Nano is a small language model that runs locally inside Chrome — no internet connection is required after the initial model download. Your page content is processed entirely on-device, ensuring complete privacy with zero data transmission to external servers.
+Argus has two AI options. Claude Opus 4.6 processes requests via Anthropic's cloud API — calls go directly from your browser to `api.anthropic.com` when you provide your own API key. Gemini Nano runs entirely on your device using Chrome's built-in model with no network calls. In both cases, Pixelesq never sees or processes your data.
 
 ### What permissions does Argus need and why?
 
-Argus requests three Chrome permissions: **sidePanel** to open the extension as a side panel alongside your page, **activeTab** to read the content of the tab you're currently viewing (only when you click the Argus icon), and **storage** to save your preferences locally. Argus does not request broad browsing history, bookmark, or download permissions.
+Argus requests three Chrome permissions: **sidePanel** to open the extension as a side panel alongside your page, **activeTab** to read the content of the tab you're currently viewing (only when you click the Argus icon), and **storage** to save your preferences and optional Claude API key locally. Argus does not request broad browsing history, bookmark, or download permissions.
 
 <!-- End Privacy & Security -->
 
