@@ -45,13 +45,29 @@ Once loaded, pin Argus to your toolbar and click the icon on any page to open th
 
 ---
 
-## 2. Enabling AI Insights (Optional)
+## 2. Setting Up AI Insights (Optional)
 
-Argus includes an AI Insights tab powered by Chrome's built-in Gemini Nano model. This is entirely optional — every other feature works without it — but it adds AI-generated title rewrites, meta description suggestions, FAQ schema generation, and more.
+Argus includes a powerful AI Insights tab with a three-tier AI system. This is entirely optional — all extraction and audit features work without it. You can choose between Claude Opus 4.6 (the most capable), Chrome's on-device Gemini Nano (fully private), or use the static fallback that always works.
 
-AI Insights run completely on your device. No data is sent to any server, no API keys are required, and there are no usage limits.
+### Option A: Claude Opus 4.6 (Recommended — Most Powerful)
 
-### Setup Steps
+Bring your own Anthropic API key to unlock the deepest SEO analysis available in any Chrome extension. Claude Opus 4.6 provides SEO strategy briefs, schema markup generation, technical fix code, content gap analysis, and competitor insights — all streamed in real time.
+
+1. **Get an Anthropic API key** from [console.anthropic.com](https://console.anthropic.com). Keys start with `sk-ant-`.
+
+2. **Open the Insights tab** in Argus and click the **Settings** (gear) icon in the top-right corner.
+
+3. **Enter your API key** in the Claude API field. Argus validates the key by making a minimal test request.
+
+4. **Done.** Claude is now the active AI provider. You'll see "Opus 4.6 Analysis" in the status bar. Responses stream in real time.
+
+Your API key is stored locally in `chrome.storage.local` — it never leaves your device and is never sent to any Pixelesq server. API calls go directly from your browser to `api.anthropic.com`. Usage is billed by Anthropic at their standard rates.
+
+You can remove your API key at any time from the Settings panel, which immediately reverts to Gemini Nano or static fallback.
+
+### Option B: Gemini Nano (On-Device, No API Key)
+
+If you prefer fully on-device AI with no API key and no network calls, set up Chrome's built-in Gemini Nano:
 
 1. **Update Chrome to version 138 or later.** Check your version at `chrome://settings/help`.
 
@@ -68,6 +84,8 @@ AI Insights run completely on your device. No data is sent to any server, no API
 5. **Wait for the one-time model download.** The first time you open the AI Insights tab, Chrome will download the Gemini Nano model (~2.4 GB). This happens once and may take a few minutes depending on your connection speed.
 
 6. **Done.** After the download completes, the AI model runs entirely on-device. No further downloads are needed, and all analysis stays in your browser.
+
+Note: If both Claude and Gemini Nano are configured, Claude takes priority as the active provider since it offers deeper analysis.
 
 ---
 
@@ -216,46 +234,64 @@ A category starts at 100 and is reduced by each issue. The category score cannot
 
 ## 5. Using the AI Insights Tab
 
-The AI Insights tab uses Chrome's built-in Gemini Nano to provide intelligent, context-aware analysis of the current page. Everything runs on-device, so your page data never leaves the browser.
+The AI Insights tab provides intelligent, context-aware SEO analysis using a three-tier AI system: Claude Opus 4.6 (most powerful), Chrome's Gemini Nano (on-device), or static analysis (always available).
 
 ### Checking AI Status
 
-At the top of the Insights tab, a status indicator shows the current state of the AI model:
+At the top of the Insights tab, a status indicator and label show the active provider:
 
-- **Green dot — "AI Ready"** — The model is loaded and ready. AI features will work immediately.
-- **Amber dot (pulsing) — "Model downloading..."** — Chrome is downloading the Gemini Nano model. Wait for the download to complete (~2.4 GB, one-time), then reopen the Insights tab.
-- **Red dot — "AI unavailable"** — The model is not available. Check that you are on Chrome 138+ and that both flags are enabled (see the [Enabling AI Insights](#2-enabling-ai-insights-optional) section above).
+- **"Opus 4.6 Analysis"** — Claude is active. The most powerful analysis is available, including exclusive deep analysis features.
+- **"AI Analysis"** — Gemini Nano is active. On-device analysis with no network calls.
+- **"Static Analysis"** — No AI provider available. Rule-based analysis and checklists are shown. Click the Settings icon to configure Claude or set up Gemini Nano.
 
 ### Auto-Run Analyses
 
-When the AI model is available, three analyses run automatically as soon as you open the Insights tab:
+When an AI provider is active, analyses run automatically as soon as you open the Insights tab:
 
-- **Page Classification** — Identifies what the page is about, its target audience, and the likely search intent.
-- **Meta Description Assessment** — Evaluates the quality and effectiveness of the current meta description.
-- **Content Quality** — Analyzes the page's content for thin content signals, keyword usage, and actionable improvements.
+**With Claude Opus 4.6:**
+- **Page Classification** — Identifies what the page is about, its target audience, and search intent.
+- **Content Quality** — Analyzes content depth, keyword patterns, and provides specific improvements.
+- **SEO Strategy Brief** (Claude-exclusive) — A comprehensive, prioritized action plan covering critical issues, quick wins, strategic opportunities, and competitive edge tactics.
 
-Each analysis appears in a card. You can click the copy button to copy the AI's output, or click the retry button to re-run the analysis.
+**With Gemini Nano:**
+- **Page Classification** — Same as above, using a concise context summary.
+- **Meta Description Assessment** — Evaluates quality and suggests improvements.
+- **Content Quality** — Analyzes thin content signals and search intent alignment.
 
-### On-Demand Actions
+Each analysis appears in a card. Use the copy button to copy the output, or the retry button to re-run.
 
-Below the auto-run analyses, four action buttons let you generate additional AI insights on demand:
+### On-Demand Actions (Available with Both Claude and Gemini)
+
+Four action buttons let you generate additional AI insights on demand:
 
 - **Rewrite Description** — Generates an optimized meta description based on the page's actual content.
 - **Improve Title** — Suggests a better, keyword-front-loaded title tag.
 - **Suggest FAQ** — Generates 3-5 FAQ questions and answers suitable for FAQ schema markup.
 - **Schema Types** — Recommends which Schema.org types to add based on the page content.
 
-Click any button, wait a moment for the AI to process, and the result appears in a card below. Use the copy button on each card to copy the generated text directly, then customize it for your needs.
+Click any button, wait a moment, and the result appears in a card below.
+
+### Opus 4.6 Deep Analysis (Claude-Exclusive)
+
+When Claude is the active provider, four additional advanced actions are available under a distinct "Opus 4.6 Deep Analysis" section:
+
+- **Generate Schema** — Creates complete, valid JSON-LD markup wrapped in `<script>` tags, ready to paste into your `<head>`.
+- **Technical Fixes** — For every audit issue, generates the exact HTML/meta tag code to fix it. Ready to paste.
+- **Content Gaps** — Identifies the top 5 missing sections or topics that top-ranking pages cover.
+- **Competitor Insights** — Analysis of what top-ranking pages do differently: content depth, schema, E-E-A-T signals, internal linking.
+
+These features leverage Opus 4.6's advanced reasoning for analysis that goes far beyond what any rule-based system or smaller model can provide.
 
 ### Static Analysis Fallback
 
-When the AI model is not available, Argus does not leave you empty-handed. The Insights tab automatically falls back to **static analysis**, which includes:
+When no AI provider is available, the Insights tab shows:
 
+- A CTA to configure Claude API key or download Gemini Nano.
 - **Content Assessment** — Word count evaluation and estimated reading time.
-- **Missing Meta Tags** — A checklist of any meta tags that are absent (title, description, canonical, viewport, language, OG tags, Twitter card).
-- **Schema Recommendations** — Rule-based suggestions for which structured data types to consider adding.
+- **Missing Meta Tags** — A checklist of any meta tags that are absent.
+- **Schema Recommendations** — Rule-based suggestions for structured data types to add.
 
-Even without AI, you still get actionable guidance from the static analysis.
+Even without AI, you get actionable guidance from the static analysis.
 
 ---
 
