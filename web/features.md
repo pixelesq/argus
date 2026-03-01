@@ -261,57 +261,113 @@ Every audit result includes a clear, human-readable message explaining what was 
 
 ---
 
-## Insights Tab — AI-Powered SEO Analysis, Entirely On-Device
+## Insights Tab — Three-Tier AI-Powered SEO Analysis
 
-The Insights tab is an AI SEO tool powered by Chrome's built-in Gemini Nano — a large language model that runs entirely on your device. No data is sent to any server. No API keys are required. No usage limits. No cost. Every AI analysis happens in your browser, which means your page content, URLs, and SEO data remain completely private.
+The Insights tab is the most powerful AI SEO tool in any Chrome extension. It offers a three-tier AI system that automatically selects the best available provider: Claude Opus 4.6 (the most capable), Chrome's on-device Gemini Nano (fully private), or a rule-based static fallback (always available).
+
+### Three-Tier AI Provider System
+
+Argus detects available AI providers on load and activates the best one:
+
+1. **Claude Opus 4.6** — If the user has entered a Claude API key in Settings, Argus uses Anthropic's most capable model for deep, nuanced analysis. Claude receives the full page extraction — meta tags, Open Graph, Twitter Card, headings, links, images, structured data, technical signals, and audit results — for the richest possible context. Responses stream in real time via Server-Sent Events.
+
+2. **Gemini Nano** — If no Claude key is configured but Chrome's built-in AI model is available, Argus uses Gemini Nano for on-device analysis. The AI receives a concise context summary (URL, title, description, word count, first 10 headings, and schema types). No data leaves the browser.
+
+3. **Static Analysis** — When neither AI provider is available, Argus provides comprehensive rule-based analysis with no network requests. This tier always works, on any Chrome version, even offline.
+
+The status bar at the top of the Insights tab shows which provider is active: "Opus 4.6 Analysis" for Claude, "AI Analysis" for Gemini, or "Static Analysis" for the fallback. A Settings icon opens the API key configuration panel.
 
 ### How It Works
 
-Argus uses Chrome's built-in Prompt API (available in Chrome 137+) to access the Gemini Nano model. When you open the Insights tab, Argus checks whether the model is available, downloading, or unavailable, and displays the current status at the top of the tab.
+When the Insights tab opens, Argus checks for a stored Claude API key first, then checks Gemini Nano availability. The AI receives structured context built from the data already extracted by the Extract tab — no additional page fetching occurs.
 
-The AI receives a structured context summary of the current page including the URL, title, meta description, word count, the first 10 headings, and any detected Schema.org types. This context is constructed locally from the data already extracted by the Extract tab — no additional network requests are made.
+For Claude, Argus sends the full `PageExtraction` object including every meta tag value, all heading text, link counts, image audit results, JSON-LD validation status, and technical signals. This deep context enables significantly more specific and actionable recommendations than the concise summary sent to Gemini Nano.
+
+Claude requests go directly from the browser to `api.anthropic.com` using the `anthropic-dangerous-direct-browser-access` header. No data is routed through Pixelesq servers. The API key is stored locally in `chrome.storage.local`, never synced.
 
 ### Auto-Run Analyses
 
-When Gemini Nano is available, three analyses run automatically as soon as you open the Insights tab:
+When an AI provider is active, analyses run automatically as soon as you open the Insights tab:
 
-1. **Page Classification** — the AI identifies what the page is about, who the target audience is, and what the search intent is, summarized in one concise sentence. This is useful for verifying that your page communicates its purpose clearly to both users and search engines.
+**With Claude Opus 4.6:**
 
-2. **Meta Description Assessment** — the AI evaluates the quality of your current meta description, checking for compelling copy, keyword inclusion, call-to-action presence, and appropriate length. It provides specific, actionable feedback on how to improve it.
+1. **Page Classification** — identifies what the page is about, the target audience, and search intent. Uses the full page context for precise classification.
 
-3. **Content Quality Analysis** — the AI analyzes the page for thin content signals, keyword usage patterns, search intent alignment, and provides one specific, actionable improvement. The analysis is kept under 150 words and focuses on being direct and practical rather than generic.
+2. **Content Quality Analysis** — analyzes content depth, keyword patterns, search intent alignment, and provides specific, actionable improvements.
 
-Each auto-run analysis shows a loading spinner while the model processes, then displays the result in a card with a copy button and a retry button. If an analysis fails, the error is displayed inline with the option to retry.
+3. **SEO Strategy Brief** (Claude-exclusive) — a comprehensive, prioritized SEO action plan covering:
+   - **Critical Issues** — things actively hurting rankings (noindex, missing canonical, broken schema)
+   - **Quick Wins** — easy fixes with high impact (missing meta descriptions, alt text, heading hierarchy)
+   - **Strategic Opportunities** — improvements requiring more effort (content gaps, schema enhancements, internal linking)
+   - **Competitive Edge** — advanced tactics for the detected page type (E-E-A-T signals, featured snippet optimization)
 
-### On-Demand AI Actions
+   Each item is formatted as `[Priority: High/Medium/Low] Issue → Recommended fix`.
 
-Four additional AI-powered actions are available as buttons that you trigger manually:
+**With Gemini Nano:**
 
-1. **Rewrite Meta Description** — generates a fully optimized meta description between 140 and 155 characters. The rewrite includes the primary keyword naturally, incorporates a call to action, and is written to maximize click-through rate from search results. The output is the description text only — ready to copy and paste directly into your CMS or code.
+1. **Page Classification** — same as above, using the concise context summary.
 
-2. **Improve Title** — suggests an improved title tag between 50 and 60 characters with the primary keyword front-loaded for maximum SERP visibility. The suggestion is clickable and compelling, designed to earn clicks in search results.
+2. **Meta Description Assessment** — evaluates the quality of the current meta description, checking for compelling copy, keyword inclusion, call-to-action presence, and appropriate length.
 
-3. **Suggest FAQ Schema** — generates 3 to 5 frequently asked questions with brief answers based on the page content. The output is formatted as Q&A pairs ready to be converted into FAQPage structured data markup. FAQ schema can earn additional SERP real estate with expandable question-and-answer dropdowns.
+3. **Content Quality Analysis** — analyzes thin content signals, keyword usage, and search intent alignment.
 
-4. **Recommend Schema Types** — analyzes the page URL, title, description, and existing schema types, then recommends which additional Schema.org types should be added. The recommendation includes specific required properties for each suggested type, so you know exactly what to implement.
+Each auto-run analysis shows a loading spinner while processing, then displays the result in a card with a copy button and a retry button.
 
-Every on-demand result includes a copy button for easy transfer to your workflow and a retry button to regenerate the analysis.
+### On-Demand AI Actions (Shared)
+
+Four AI-powered actions are available as buttons with both Claude and Gemini:
+
+1. **Rewrite Meta Description** — generates a fully optimized meta description between 140 and 155 characters. Includes the primary keyword naturally, incorporates a call to action, and is written to maximize click-through rate. Ready to copy and paste.
+
+2. **Improve Title** — suggests an improved title tag between 50 and 60 characters with the primary keyword front-loaded. Clickable, compelling, designed to earn clicks in search results.
+
+3. **Suggest FAQ Schema** — generates 3 to 5 frequently asked questions with brief answers based on the page content. Formatted as Q&A pairs ready for FAQPage structured data markup.
+
+4. **Recommend Schema Types** — recommends which Schema.org types should be added, with specific required properties for each suggested type.
+
+When Claude is active, these actions receive the full page context for more specific, accurate results. With Gemini, they use the concise summary.
+
+### Opus 4.6 Deep Analysis (Claude-Exclusive)
+
+When Claude is the active provider, four additional advanced actions unlock under a distinct "Opus 4.6 Deep Analysis" section:
+
+1. **Generate Schema Markup** — generates complete, valid JSON-LD markup wrapped in `<script>` tags, ready to paste into your page's `<head>`. Includes all required and recommended properties for the detected schema type, following Google's structured data guidelines. If schema already exists, generates an improved or expanded version.
+
+2. **Technical Fixes** — for every issue in the audit report, generates the exact HTML or meta tag code to fix it. Output is code blocks ready to paste into your `<head>`. Prioritizes code over explanation.
+
+3. **Content Gaps** — identifies the top 5 most impactful content gaps: sections or topics that should exist on this page type but are missing. For each gap, provides a suggested heading (H2/H3), what content should go under it, and why it matters for SEO.
+
+4. **Competitor Insights** — based on the page type, industry, and current optimization state, provides insights on what top-ranking pages for similar queries typically do differently. Covers content depth, schema types, internal linking patterns, featured snippet targeting, and E-E-A-T signals.
+
+These features leverage Opus 4.6's advanced reasoning to provide analysis that goes far beyond what any rule-based system or smaller model can offer.
+
+### Configuring Claude API Key
+
+Click the Settings icon in the Insights tab status bar to open the AI Settings panel:
+
+1. Enter your Anthropic API key (starts with `sk-ant-`).
+2. Argus validates the key by making a minimal test request to the Claude API.
+3. Once validated, the key is stored in `chrome.storage.local` and Claude becomes the active provider immediately.
+4. You can remove your key at any time, which reverts Argus to Gemini Nano or static fallback.
+
+Your API key is stored only on your device. It is never synced via `chrome.storage.sync`, never sent to any Pixelesq server, and API calls go directly from your browser to `api.anthropic.com`.
 
 ### Graceful Fallback When AI Is Unavailable
 
-When Gemini Nano is not available (Chrome version below 137, model not enabled, or model still downloading), the Insights tab does not simply show an empty state. Instead, it provides a comprehensive static analysis:
+When neither Claude nor Gemini Nano is available, the Insights tab provides:
 
-**If the model is downloading:** Argus shows a clear message explaining that the Gemini Nano model is currently downloading (~2.4 GB) and that AI features will be available once the download completes.
+- A prominent CTA to configure Claude API key ("Unlock AI-Powered SEO Insights")
+- A secondary CTA to download Gemini Nano if Chrome supports it
+- Setup instructions for enabling Gemini Nano via `chrome://flags`
+- Three static analysis panels that always work:
 
-**If AI is unavailable:** Argus displays setup instructions (enable the flag at `chrome://flags/#prompt-api-for-gemini-nano`, restart Chrome) and falls back to three static analysis panels:
+1. **Content Assessment** — evaluates word count with qualitative assessment and estimated reading time.
 
-1. **Content Assessment** — evaluates the word count and provides a qualitative assessment. Pages with 300+ words are noted as having sufficient content. Pages with fewer words are flagged with a recommendation to add more substantive content. Pages with no detected text content are called out. Estimated reading time is calculated at 200 words per minute.
+2. **Missing Meta Tags Checklist** — every important meta tag that is absent, highlighted in amber: title, meta description, canonical URL, viewport, HTML lang, og:title, og:description, og:image, and twitter:card.
 
-2. **Missing Meta Tags Checklist** — a bullet-pointed list of every important meta tag that is absent from the page, including: title tag, meta description, canonical URL, viewport, HTML lang attribute, og:title, og:description, og:image, and twitter:card. Each missing tag is highlighted in amber for immediate visibility.
+3. **Rule-Based Schema Recommendations** — lists detected schema types if present, or recommends types to add (Article, Product, Organization, BreadcrumbList) based on common patterns.
 
-3. **Rule-Based Schema Recommendations** — if JSON-LD is already present, Argus lists the detected schema types. If no structured data exists, it provides specific recommendations: Article/BlogPosting for blog content, Product for product pages, Organization for homepages, and BreadcrumbList for navigation. These recommendations are based on common Schema.org patterns and provide a starting point even without AI analysis.
-
-The static fallback ensures that the Insights tab always delivers value, regardless of whether the AI model is available.
+The static fallback ensures the Insights tab always delivers value.
 
 ---
 
@@ -320,19 +376,19 @@ The static fallback ensures that the Insights tab always delivers value, regardl
 | Specification | Detail |
 |---|---|
 | **Extension format** | Chrome Extension Manifest V3 |
-| **Total size** | 291 KB |
-| **Framework** | WXT (Vite-based extension framework) + React |
-| **Styling** | TailwindCSS |
-| **Language** | TypeScript throughout — zero JavaScript |
-| **AI model** | Chrome Built-in Gemini Nano (on-device) |
+| **Framework** | WXT (Vite-based extension framework) + React 19 |
+| **Styling** | TailwindCSS 4 |
+| **Language** | TypeScript 5.9 throughout — zero JavaScript |
+| **AI models** | Claude Opus 4.6 (BYOK, cloud) + Chrome Built-in Gemini Nano (on-device) + Static fallback |
+| **MCP server** | `@pixelesq/argus-mcp` on npm — 4 tools for Claude Code, Cursor, Windsurf |
 | **UI paradigm** | Side panel (persists across page navigation) |
 | **Theme** | Dark theme UI optimized for extended use |
 | **Auto-refresh** | Refreshes data on tab switch and page load |
-| **Network requests** | None (fully client-side) |
+| **Network requests** | None by default. Optional: Claude API calls when user provides their own API key. |
 | **Data collection** | None — no analytics, no tracking, no telemetry |
 | **Permissions** | `sidePanel`, `activeTab`, `storage` |
 | **Icon set** | Lucide (open-source) |
-| **Price** | Free — no premium tier, no usage limits |
+| **Price** | Free — no premium tier, no usage limits. Claude API usage billed by Anthropic at their standard rates. |
 
 ### Side Panel Architecture
 
@@ -344,14 +400,14 @@ Unlike popup-based extensions that close when you click elsewhere, Argus runs in
 
 ### Privacy and Security
 
-Argus operates entirely within your browser:
+Argus operates with a strict privacy-first design:
 
-- No data is transmitted to external servers.
-- No browsing history is stored or collected.
-- No analytics or tracking scripts are included.
-- The optional AI features use Chrome's built-in Gemini Nano model, which runs on-device. Your page content is never sent to any API endpoint.
+- **No analytics, tracking, or telemetry** — no browsing history is stored or collected.
+- **Gemini Nano** runs entirely on-device — no data leaves your browser.
+- **Claude Opus 4.6** is opt-in only. If you provide an API key, page metadata is sent directly from your browser to `api.anthropic.com`. Pixelesq never sees, proxies, or stores your data. You can remove your key at any time.
+- **No Pixelesq server calls** — the extension never communicates with any Pixelesq-operated server.
 
-The extension requests only the minimum permissions it needs: `sidePanel` to render the UI, `activeTab` to read page content from the active tab, and `storage` to persist settings.
+The extension requests only the minimum permissions it needs: `sidePanel` to render the UI, `activeTab` to read page content from the active tab, and `storage` to persist settings and the optional API key.
 
 ---
 
@@ -361,7 +417,7 @@ Argus was built for the people who actually do SEO work every day — developers
 
 Most Chrome extension SEO audit tools give you either shallow extraction (just the meta tags) or overwhelming raw data (every HTTP header and DOM node). Argus is designed to hit the sweet spot: comprehensive enough to catch every issue that matters, focused enough that you can act on the results in minutes, and intelligent enough to explain what each result means.
 
-Whether you need a meta tag checker for Chrome, a JSON-LD validator extension, an open graph checker, a twitter card checker, a heading structure checker, or an AI SEO tool — Argus is the single extension that replaces them all.
+Whether you need a meta tag checker for Chrome, a JSON-LD validator extension, an open graph checker, a twitter card checker, a heading structure checker, an AI SEO tool with Claude Opus 4.6, or an MCP server for terminal-based SEO auditing — Argus is the single tool that replaces them all.
 
 [Install Argus free from the Chrome Web Store.](https://chrome.google.com/webstore)
 

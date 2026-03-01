@@ -47,7 +47,7 @@ This creates a `.zip` file in the `.output/` directory (e.g., `.output/argus-1.0
 |---|---|
 | **Language** | English |
 | **Extension name** | `Argus by Pixelesq — SEO Inspector & AI Auditor` |
-| **Summary** | `Extract meta tags, audit SEO health, and get AI-powered insights. The all-seeing SEO inspector for marketers and developers.` |
+| **Summary** | `SEO auditor with Claude Opus 4.6 + Gemini Nano AI. 40+ checks, weighted scoring, social previews, and an MCP server for Claude Code.` |
 | **Description** | Copy from `store/listing.md` — the "Detailed Description" section |
 | **Category** | Developer Tools |
 | **Extension icon** | Upload `public/icon/128.png` (128x128 PNG) |
@@ -62,7 +62,8 @@ You need to capture these yourself from a real browser session:
 2. **Extract tab: Social Preview** — OG section expanded showing the social preview card
 3. **Audit tab** — showing the score gauge and category breakdown
 4. **Audit tab: Details** — showing audit results with severity badges
-5. **Insights tab** — showing AI analysis results (or the downloadable state with the button)
+5. **Insights tab: Claude Opus** — showing the Opus 4.6 analysis section with SEO Strategy Brief, Generate Schema, Technical Fixes, Content Gaps, and Competitor Insights buttons
+6. **Insights tab: AI Settings** — showing the Claude API key configuration panel
 
 **How to capture Chrome side panel screenshots:**
 1. Open Argus on a content-rich webpage
@@ -102,15 +103,22 @@ When asked to justify each permission:
 |---|---|
 | `sidePanel` | Required to display the extension's primary UI in Chrome's side panel, where users view extracted SEO data, audit results, and AI insights. |
 | `activeTab` | Required to identify the currently active tab and send extraction requests to the content script running on that tab. |
-| `storage` | Used to store a single user preference (whether the promotional CTA banner has been dismissed). No personal data is stored. |
+| `storage` | Used to store user preferences (CTA dismissal state) and, if the user opts in, their Claude API key for AI-powered analysis. The API key is stored locally only, never synced or transmitted to any Pixelesq server. |
 | `<all_urls>` (host permission via content script) | The content script needs to run on all URLs so users can inspect SEO data on any webpage they visit. No data is collected or transmitted — extraction only occurs when the user has the side panel open. |
+
+### Remote Code / Network Disclosure
+
+If asked whether the extension makes network requests:
+
+- The extension optionally connects to `api.anthropic.com` **only** when the user explicitly provides their own Claude API key in the Settings panel. This is used to send page metadata (title, description, headings, structured data) for AI-powered SEO analysis. No requests are made without the user's API key.
+- No other external network requests are made. All extraction and auditing runs locally.
 
 ### Data Usage Disclosure
 
 When asked what data the extension collects, select:
 
 - [x] **Website content** — "Read the content of websites you visit"
-  - Usage: "To extract meta tags, headings, links, images, and structured data for SEO analysis displayed in the side panel"
+  - Usage: "To extract meta tags, headings, links, images, and structured data for SEO analysis displayed in the side panel. If the user opts in by providing a Claude API key, extracted metadata is also sent to Anthropic's API for AI-powered recommendations."
   - Not sold to third parties
   - Not used for purposes unrelated to the extension's core functionality
   - Not used for creditworthiness or lending purposes
