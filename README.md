@@ -11,7 +11,16 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/pixelesq/argus/stargazers"><img src="https://img.shields.io/github/stars/pixelesq/argus?style=flat-square" alt="GitHub stars" /></a>
+  <a href="https://www.npmjs.com/package/@pixelesq/argus-mcp"><img src="https://img.shields.io/npm/v/@pixelesq/argus-mcp?style=flat-square" alt="npm" /></a>
+  <a href="https://chromewebstore.google.com/detail/argus-by-pixelesq/nogfkebfobckdmibhnclpjlimpkfhigg"><img src="https://img.shields.io/chrome-web-store/v/nogfkebfobckdmibhnclpjlimpkfhigg?style=flat-square" alt="Chrome Web Store" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/pixelesq/argus?style=flat-square" alt="License: MIT" /></a>
+</p>
+
+<p align="center">
   <a href="https://getargus.app">Website</a> &middot;
+  <a href="https://chromewebstore.google.com/detail/argus-by-pixelesq/nogfkebfobckdmibhnclpjlimpkfhigg">Chrome Web Store</a> &middot;
+  <a href="https://www.npmjs.com/package/@pixelesq/argus-mcp">npm</a> &middot;
   <a href="#features">Features</a> &middot;
   <a href="#install">Install</a> &middot;
   <a href="#opus-46-integration">Opus 4.6 Integration</a> &middot;
@@ -115,6 +124,12 @@ Argus includes a **Model Context Protocol (MCP) server** that brings SEO auditin
 
 ### Setup
 
+**One-line install (recommended):**
+```bash
+claude mcp add argus-seo -- npx -y @pixelesq/argus-mcp
+```
+
+**Or build from source:**
 ```bash
 # Build the MCP server
 cd mcp-server && npm install && npm run build
@@ -157,6 +172,9 @@ content.ts (DOM APIs)               fetch() + cheerio (HTML parsing)
 
 ### Chrome Extension
 
+**Quick install:** [Add to Chrome](https://chromewebstore.google.com/detail/argus-by-pixelesq/nogfkebfobckdmibhnclpjlimpkfhigg) from the Chrome Web Store.
+
+**Or build from source:**
 1. Clone and build:
    ```bash
    git clone https://github.com/pixelesq/argus.git
