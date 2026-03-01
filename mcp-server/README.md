@@ -257,7 +257,7 @@ No browser required. No headless Chrome. Just HTML parsing and rule evaluation.
 ## Related
 
 - [Argus Chrome Extension](https://www.getargus.app) — The browser extension with the same audit engine plus AI-powered insights via Claude Opus 4.6 and Gemini Nano
-- [Chrome Web Store](https://chromewebstore.google.com/detail/argus) — Install the extension
+- [Chrome Web Store](https://chromewebstore.google.com/detail/argus-by-pixelesq/nogfkebfobckdmibhnclpjlimpkfhigg) — Install the extension
 - [GitHub](https://github.com/pixelesq/argus) — Source code
 
 ---
