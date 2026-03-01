@@ -4,6 +4,12 @@
   "license": "MIT",
   "version": "1.0.0",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pixelesq/argus.git"
+  },
+  "homepage": "https://www.getargus.app",
+  "bugs": "https://github.com/pixelesq/argus/issues",
   "scripts": {
     "dev": "wxt",
     "dev:firefox": "wxt -b firefox",
