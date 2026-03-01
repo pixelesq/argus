@@ -6,10 +6,12 @@
 
 <p align="center">
   <strong>The all-seeing, AI-powered SEO inspector.</strong><br/>
-  A free Chrome extension + MCP server that brings enterprise-level SEO auditing to everyone — powered by Claude Opus 4.6.
+  A free Chrome extension + MCP server that brings enterprise-level SEO auditing to everyone — powered by Claude Opus 4.6.<br/>
+  <a href="https://getargus.app">getargus.app</a>
 </p>
 
 <p align="center">
+  <a href="https://getargus.app">Website</a> &middot;
   <a href="#features">Features</a> &middot;
   <a href="#install">Install</a> &middot;
   <a href="#opus-46-integration">Opus 4.6 Integration</a> &middot;
